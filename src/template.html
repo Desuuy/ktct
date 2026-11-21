@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn thi Kinh tế chính trị</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Study booklet: ink-navy text on cool paper, textbook-crimson accent, gold for highlights */
+  --bg:#f4f5f8; --surface:#ffffff; --ink:#18213a; --muted:#5d6680; --line:#dfe2ea;
+  --accent:#a3202a; --accent-soft:#f8e7e8; --gold:#b7861c;
+  --ok:#1f7a4a; --ok-soft:#e4f3ea; --bad:#b42318; --bad-soft:#fdecea;
+  --font-display:"Lora", Georgia, serif;
+  --font-body:"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
+    --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
+    --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
+  --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
+  --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px 80px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.25;margin:0}
+h1{font-size:1.75rem}
+h2{font-size:1.35rem}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.top .back{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 12px}
+.eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.muted{color:var(--muted)}
+.hero{display:grid;gap:6px;margin-bottom:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:8px;text-align:left;color:var(--ink)}
+button.card:hover{border-color:var(--accent)}
+.card .num{font-family:var(--font-display);font-size:1.6rem;color:var(--accent);line-height:1}
+.card .t{font-weight:600}
+.pill{display:inline-block;font-size:.78rem;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.exam-card{border:2px solid var(--accent);background:var(--accent-soft);margin-bottom:12px;grid-template-columns:1fr auto;align-items:center}
+.exam-card .go{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:600}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:16px 0}
+.tab{background:none;border:none;border-bottom:3px solid transparent;padding:8px 12px;color:var(--muted);font-weight:600}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.notes{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 18px 18px}
+.notes h3{font-size:1.1rem;margin:18px 0 8px;color:var(--accent)}
+.notes p,.notes li{max-width:68ch}
+.notes ul,.notes ol{padding-left:20px;margin:6px 0}
+.notes li{margin:4px 0}
+.notes table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.95rem}
+.notes th,.notes td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.notes th{background:var(--accent-soft)}
+.tablewrap{overflow-x:auto}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:14px}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.1rem;padding:4px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line)}
+.timer.warn{color:var(--bad);border-color:var(--bad)}
+.progress{flex:1;min-width:120px;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);width:0}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 14px;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.toggle{display:flex;gap:6px;align-items:center;font-size:.92rem;color:var(--muted)}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;scroll-margin-top:80px}
+.q .qh{display:flex;gap:10px;margin-bottom:10px}
+.q .qn{font-weight:700;color:var(--accent);flex:none;font-variant-numeric:tabular-nums}
+.q .qt{font-weight:600}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink)}
+.opt .k{flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--muted);display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .k{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+.exp{margin-top:10px;padding:10px 12px;border-left:3px solid var(--gold);background:var(--bg);border-radius:0 8px 8px 0;font-size:.95rem}
+.exp b{color:var(--gold)}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;display:grid;gap:12px}
+.score{display:flex;gap:18px;flex-wrap:wrap;align-items:baseline}
+.score .big{font-family:var(--font-display);font-size:2.6rem;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;margin-bottom:14px}
+.navgrid button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 0;font-size:.85rem;font-variant-numeric:tabular-nums}
+.navgrid button.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.navgrid button.r{background:var(--ok);border-color:var(--ok);color:#fff}
+.navgrid button.w{background:var(--bad);border-color:var(--bad);color:#fff}
+.breakdown{width:100%;border-collapse:collapse;font-size:.95rem}
+.breakdown td{padding:6px 4px;border-bottom:1px solid var(--line)}
+.breakdown td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(10,12,20,.55);display:none;place-items:center;padding:16px;z-index:20}
+.modal.show{display:grid}
+.modal .box{background:var(--surface);border-radius:14px;padding:20px;max-width:380px;width:100%;display:grid;gap:14px}
+.notes a{color:var(--accent)}
+.unv{display:inline-block;font-family:var(--font-body);font-size:.72rem;font-weight:600;color:var(--gold);border:1px solid var(--gold);border-radius:99px;padding:0 8px;vertical-align:middle}
+.tip{background:var(--accent-soft);padding:8px 12px;border-radius:8px}
+div.opt{cursor:default}
+.tabs{flex-wrap:wrap}
+.foot{margin-top:28px;font-size:.88rem;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:420px){h1{font-size:1.45rem}.score .big{font-size:2.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="box" id="modalBox"></div></div>
+<script>
+__DATA__
+</script>
+<script>
+(function(){
+const app=document.getElementById('app');
+const LETTERS=['A','B','C','D','E'];
+const store={get(k,d){try{const v=localStorage.getItem('ktct_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('ktct_'+k,JSON.stringify(v))}catch(e){}}};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')};
+const ten=(c,t)=>(Math.round(c/t*100)/10).toLocaleString('vi-VN');
+
+// Build a question instance with shuffled options (unless fixed)
+function inst(ch,raw,idx){
+  const [q,opts,a,e,fixed]=raw;
+  const order=fixed?opts.map((_,i)=>i):shuffle(opts.map((_,i)=>i));
+  return {ch,idx,q,opts:order.map(i=>opts[i]),ans:order.indexOf(a),exp:e,pick:null};
+}
+
+let session=null, tick=null;
+function stopTimer(){if(tick){clearInterval(tick);tick=null}}
+
+function modal(html,actions){
+  const m=document.getElementById('modal'),b=document.getElementById('modalBox');
+  b.innerHTML=html+'<div class="row" style="justify-content:flex-end">'+actions.map((a,i)=>`<button class="btn ${a.primary?'primary':''}" data-i="${i}">${a.label}</button>`).join('')+'</div>';
+  m.classList.add('show');
+  b.querySelectorAll('button[data-i]').forEach(btn=>btn.onclick=()=>{m.classList.remove('show');const f=actions[+btn.dataset.i].fn;f&&f()});
+  b.querySelector('.btn.primary')?.focus();
+}
+
+// ---------- HOME ----------
+function home(){
+  stopTimer();session=null;
+  const best=store.get('best',{});const exams=store.get('exams',[]);
+  const total=CHAPTERS.reduce((s,c)=>s+c.qs.length,0);
+  app.innerHTML=`
+  <div class="hero">
+    <span class="eyebrow">Kinh tế chính trị Mác – Lênin · Giáo trình Bộ GD&ĐT 2021</span>
+    <h1>Ôn thi KTCT theo từng chương</h1>
+    <p class="muted" style="margin:0">Mỗi chương học theo 3 bước: đọc lý thuyết, xem trước câu hỏi kèm đáp án và giải thích, rồi làm bài trắc nghiệm có tính giờ. Tổng cộng ${total} câu.</p>
+  </div>
+  <button class="card exam-card" id="goExam">
+    <div><div class="t">Phòng thi thử: 60 câu / 60 phút</div>
+    <div class="muted" style="font-size:.92rem">Đề trộn ngẫu nhiên 10 câu mỗi chương, hết giờ tự nộp bài.${exams.length?` Lần gần nhất: <b>${exams[exams.length-1].score}/60</b>.`:''}</div></div>
+    <span class="go">Vào thi</span>
+  </button>
+  <div class="grid">
+  ${CHAPTERS.map(c=>{const b=best[c.id];return `<button class="card" data-ch="${c.id}">
+    <span class="num">Chương ${c.id}</span>
+    <span class="t">${esc(c.title)}</span>
+    <span class="row"><span class="pill">${c.qs.length} câu</span>${b!=null?`<span class="pill ok">Cao nhất ${b}/${c.qs.length}</span>`:''}</span>
+  </button>`}).join('')}
+  </div>
+  <details class="notes" style="margin-top:18px;padding:12px 18px">
+    <summary style="cursor:pointer;font-weight:600">Nguồn tài liệu và mức độ kiểm chứng</summary>
+    <ul>
+      <li><b>Khung nội dung:</b> Bộ Giáo dục và Đào tạo, <i>Giáo trình Kinh tế chính trị Mác – Lênin (Dành cho bậc đại học hệ không chuyên lý luận chính trị)</i>, NXB Chính trị quốc gia Sự thật, Hà Nội, 2021. Sáu chương và các mục lớn bám theo bản này.</li>
+      <li><b>Văn bản dùng để đối chiếu:</b> toàn văn bản thảo giáo trình do Hội đồng biên soạn (chủ trì PGS.TS Ngô Tuấn Nghĩa) thực hiện, bản số hóa trên <a href="https://archive.org/details/giao-trinh-kinh-te-chinh-tri-mac-lenin">Internet Archive</a>. Các định nghĩa, công thức, danh sách (chức năng của KTCT, chức năng của tiền, tác động của quy luật giá trị, phương pháp sản xuất GTTD, 5 đặc điểm CNTB độc quyền, cartel/syndicate/trust, các mức độ hội nhập…) đã được dò theo văn bản này.</li>
+      <li><b>Lưu ý:</b> bản thảo và bản in 2021 khác nhau ở một số chỗ về bố cục và câu chữ. Đề thi có thể trích nguyên văn bản in 2021, nên khi thấy chữ trong đề hơi khác thì hiểu theo ý.</li>
+      <li><b>Đã loại bỏ:</b> các câu hỏi về chi tiết không có trong giáo trình (câu nói của W. Petty, năm xuất bản tập I Bộ Tư bản, chính sách NEP, năm gia nhập ASEAN/APEC, EVFTA) và cách nói "điều kiện cần/đủ".</li>
+      <li><b>Rà soát lần cuối:</b> bỏ thêm 2 câu không tìm được nguồn xác nhận (lý do hoàn thiện thể chế; "lợi ích cá nhân là cơ sở của các lợi ích khác"), sửa định nghĩa cách mạng công nghiệp theo đúng văn bản giáo trình. Những đoạn lý thuyết còn gắn nhãn <span class="unv">Chưa đối chiếu nguyên văn giáo trình</span> là kiến thức đúng nhưng chưa tìm được câu chữ gốc trong sách. Khái niệm CNH, HĐH của Hội nghị TW 7 khóa VII (1994) đã được xác nhận qua tài liệu của Đại học Huế.</li>
+      <li><b>Câu hỏi bổ sung từ Quizlet:</b> 19 câu có ghi chú "Dạng câu hỏi thường gặp trong các bộ đề ôn thi trên Quizlet" được tham khảo từ các bộ đề sinh viên (ví dụ bộ đề của ĐH Phenikaa theo đúng tên 6 chương của giáo trình 2021). Chỉ lấy những câu mà nhiều bộ đề cho đáp án thống nhất và khớp với kiến thức giáo trình; câu hỏi được viết lại, không sao chép nguyên bộ. Quizlet là nội dung do sinh viên tự soạn, không phải nguồn chính thức.</li>
+      <li><b>Đặc biệt:</b> giáo trình viết kinh tế tư nhân là "một động lực quan trọng"; Nghị quyết 68-NQ/TW (2025) đã nâng thành "động lực quan trọng nhất". Nên hỏi lại giảng viên đề thi dùng cách nói nào.</li>
+    </ul>
+  </details>
+  <p class="foot">Chúc Cún thi tốt nhé!</p>`;
+  app.querySelector('#goExam').onclick=()=>location.hash='thi-thu';
+  app.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>location.hash='chuong-'+b.dataset.ch);
+}
+
+// ---------- CHAPTER ----------
+function chapter(id,tab){
+  stopTimer();
+  const c=CHAPTERS.find(x=>x.id===id); if(!c) return home();
+  app.innerHTML=`
+  <div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Chương ${c.id}</span></div>
+  <h1>${esc(c.title)}</h1>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-notes" aria-selected="${tab==='notes'}">1. Lý thuyết</button>
+    <button class="tab" role="tab" id="t-review" aria-selected="${tab==='review'}">2. Xem câu hỏi & đáp án</button>
+    <button class="tab" role="tab" id="t-quiz" aria-selected="${tab==='quiz'}">3. Làm bài (${c.qs.length} câu)</button>
+  </div>
+  <div id="pane"></div>`;
+  app.querySelector('#back').onclick=()=>location.hash='';
+  app.querySelector('#t-notes').onclick=()=>chapter(id,'notes');
+  app.querySelector('#t-review').onclick=()=>chapter(id,'review');
+  app.querySelector('#t-quiz').onclick=()=>chapter(id,'quiz');
+  const pane=app.querySelector('#pane');
+  if(tab==='notes'){
+    pane.innerHTML=`<div class="notes">${c.notes.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>')}</div>
+    <div class="row" style="margin-top:14px"><button class="btn primary" id="next">Đọc xong, xem câu hỏi & đáp án</button></div>`;
+    pane.querySelector('#next').onclick=()=>{chapter(id,'review');scrollTo(0,0)};
+  } else if(tab==='review'){
+    renderReview(c,pane,store.get('hideAns',false));
+  } else {
+    startPractice(c,c.qs.map((r,i)=>inst(c.id,r,i)),pane);
+  }
+}
+
+function renderReview(c,pane,hide){
+  const items=c.qs.map((r,i)=>inst(c.id,r,i));
+  pane.innerHTML=`
+  <div class="bar">
+    <span class="muted">${items.length} câu kèm đáp án đúng và giải thích. Đọc hết rồi chuyển sang làm bài.</span>
+    <label class="toggle"><input type="checkbox" id="hide" ${hide?'checked':''}> Che đáp án để tự đoán trước</label>
+  </div>
+  ${items.map((it,i)=>`<div class="q" id="r${i}"><div class="qh"><span class="qn">Câu ${i+1}.</span><span class="qt">${esc(it.q)}</span></div>
+    <div class="opts">${it.opts.map((o,j)=>`<div class="opt ${!hide&&j===it.ans?'right':''}" data-r="${i}" data-o="${j}"><span class="k">${LETTERS[j]}</span><span>${esc(o)}</span></div>`).join('')}</div>
+    ${hide?`<button class="btn reveal" data-r="${i}" style="margin-top:10px">Xem đáp án</button><div class="exp" hidden><b>Đáp án: ${LETTERS[it.ans]}.</b> ${esc(it.exp)}</div>`:`<div class="exp"><b>Đáp án: ${LETTERS[it.ans]}.</b> ${esc(it.exp)}</div>`}
+  </div>`).join('')}
+  <div class="row"><button class="btn primary" id="toQuiz">Đã xem xong, vào làm bài</button></div>`;
+  pane.querySelector('#hide').onchange=e=>{store.set('hideAns',e.target.checked);renderReview(c,pane,e.target.checked)};
+  pane.querySelectorAll('.reveal').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.r,box=document.getElementById('r'+i);
+    box.querySelector('.opt[data-o="'+items[i].ans+'"]').classList.add('right');
+    box.querySelector('.exp').hidden=false;b.remove();
+  });
+  pane.querySelector('#toQuiz').onclick=()=>{chapter(c.id,'quiz');scrollTo(0,0)};
+}
+
+function startPractice(c,items,pane){
+  session={mode:'practice',c,items,start:Date.now(),instant:store.get('instant',false),done:false,pane};
+  renderPractice();
+  tick=setInterval(()=>{const t=document.getElementById('timer');if(t&&!session.done)t.textContent='⏱ '+fmt((Date.now()-session.start)/1000)},1000);
+}
+
+function renderPractice(){
+  const s=session,p=s.pane;
+  const answered=s.items.filter(x=>x.pick!==null).length;
+  p.innerHTML=`
+  ${s.done?resultBlock():''}
+  <div class="bar">
+    <span class="timer" id="timer">⏱ ${fmt(((s.done?s.end:Date.now())-s.start)/1000)}</span>
+    <div class="progress" aria-label="Tiến độ"><span style="width:${answered/s.items.length*100}%"></span></div>
+    <span class="muted" style="font-variant-numeric:tabular-nums">${answered}/${s.items.length}</span>
+    ${s.done?'':`<label class="toggle"><input type="checkbox" id="instant" ${s.instant?'checked':''}> Hiện đáp án ngay</label>
+    <button class="btn primary" id="submit">Nộp bài</button>`}
+  </div>
+  <div id="qs">${s.items.map((it,i)=>qHTML(it,i,s.done||(s.instant&&it.pick!==null))).join('')}</div>
+  ${s.done?'':`<div class="row"><button class="btn primary" id="submit2">Nộp bài</button></div>`}`;
+  bindQs();
+  if(!s.done){
+    p.querySelector('#instant').onchange=e=>{s.instant=e.target.checked;store.set('instant',s.instant);renderPractice()};
+    const sub=()=>{const left=s.items.filter(x=>x.pick===null).length;
+      if(left)modal(`<h2>Nộp bài?</h2><p style="margin:0">Còn <b>${left}</b> câu chưa làm. Câu bỏ trống tính là sai.</p>`,[{label:'Làm tiếp'},{label:'Nộp luôn',primary:true,fn:finishPractice}]);
+      else finishPractice()};
+    p.querySelector('#submit').onclick=sub;p.querySelector('#submit2').onclick=sub;
+  } else bindResult();
+}
+
+function finishPractice(){
+  const s=session;s.done=true;s.end=Date.now();
+  const correct=s.items.filter(x=>x.pick===x.ans).length;
+  if(s.items.length===s.c.qs.length){const best=store.get('best',{});if(best[s.c.id]==null||correct>best[s.c.id]){best[s.c.id]=correct;store.set('best',best)}}
+  renderPractice();scrollTo(0,0);
+}
+
+function qHTML(it,i,reveal){
+  return `<div class="q" id="q${i}"><div class="qh"><span class="qn">Câu ${i+1}.</span><span class="qt">${esc(it.q)}</span></div>
+  <div class="opts">${it.opts.map((o,j)=>{
+    let cls='opt';
+    if(reveal){if(j===it.ans)cls+=' right';else if(j===it.pick)cls+=' wrong'}
+    else if(j===it.pick)cls+=' sel';
+    return `<button class="${cls}" data-q="${i}" data-o="${j}" ${reveal?'disabled':''}><span class="k">${LETTERS[j]}</span><span>${esc(o)}</span></button>`}).join('')}</div>
+  ${reveal?`<div class="exp"><b>${it.pick===it.ans?'Đúng rồi.':it.pick===null?'Bỏ trống.':'Chưa đúng.'}</b> Đáp án: <b>${LETTERS[it.ans]}</b>. ${esc(it.exp)}</div>`:''}
+  </div>`;
+}
+
+function bindQs(){
+  app.querySelectorAll('.opt:not([disabled])').forEach(b=>b.onclick=()=>{
+    const s=session,i=+b.dataset.q,it=s.items[i];it.pick=+b.dataset.o;
+    const reveal=s.mode==='practice'&&s.instant;
+    const el=document.getElementById('q'+i);el.outerHTML=qHTML(it,i,reveal);
+    bindQs();updateBar();
+  });
+}
+
+function updateBar(){
+  const s=session,answered=s.items.filter(x=>x.pick!==null).length;
+  const pr=app.querySelector('.progress span');if(pr)pr.style.width=answered/s.items.length*100+'%';
+  const cnt=app.querySelector('.bar .muted');if(cnt)cnt.textContent=answered+'/'+s.items.length;
+  if(s.mode==='exam'){const nb=app.querySelectorAll('.navgrid button');nb.forEach((b,i)=>b.classList.toggle('done',s.items[i].pick!==null))}
+}
+
+function resultBlock(){
+  const s=session,n=s.items.length,correct=s.items.filter(x=>x.pick===x.ans).length,wrong=n-correct;
+  const secs=(s.end-s.start)/1000;
+  let breakdown='';
+  if(s.mode==='exam'){
+    breakdown=`<table class="breakdown">${CHAPTERS.map(c=>{const its=s.items.filter(x=>x.ch===c.id);if(!its.length)return '';const k=its.filter(x=>x.pick===x.ans).length;return `<tr><td>Chương ${c.id}: ${esc(c.short)}</td><td>${k}/${its.length}</td></tr>`}).join('')}</table>`;
+  }
+  return `<div class="result">
+    <div class="score"><span class="big">${correct}/${n}</span><span>Điểm hệ 10: <b>${ten(correct,n)}</b></span><span class="muted">Thời gian làm: ${fmt(secs)}</span></div>
+    ${breakdown}
+    <div class="row">
+      ${wrong?`<button class="btn primary" id="retryWrong">Làm lại ${wrong} câu sai</button>`:''}
+      <button class="btn" id="retryAll">${s.mode==='exam'?'Thi đề mới':'Làm lại cả chương'}</button>
+      <button class="btn" id="home2">Về trang chủ</button>
+    </div>
+    <p class="muted" style="margin:0;font-size:.92rem">Kéo xuống để xem đáp án và giải thích từng câu.</p>
+  </div>`;
+}
+
+function bindResult(){
+  const s=session;
+  app.querySelector('#home2').onclick=()=>location.hash='';
+  app.querySelector('#retryAll').onclick=()=>{if(s.mode==='exam')exam(true);else chapter(s.c.id,'quiz')};
+  const rw=app.querySelector('#retryWrong');
+  if(rw)rw.onclick=()=>{
+    const wrong=s.items.filter(x=>x.pick!==x.ans).map(x=>inst(x.ch,CHAPTERS.find(c=>c.id===x.ch).qs[x.idx],x.idx));
+    stopTimer();
+    if(s.mode==='exam'){
+      app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Ôn lại câu sai trong đề thi</span></div><div id="pane"></div>`;
+      app.querySelector('#back').onclick=()=>location.hash='';
+      startPractice({id:0,qs:[],title:'Câu sai'},wrong,app.querySelector('#pane'));
+    } else {startPractice(s.c,wrong,s.pane)}
+    scrollTo(0,0);
+  };
+}
+
+// ---------- EXAM ----------
+const EXAM_N=60, EXAM_SEC=60*60, PER_CH=10;
+function exam(fresh){
+  stopTimer();
+  if(!fresh && session && session.mode==='exam'){renderExam();return}
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Phòng thi thử</span></div>
+  <h1>Thi thử 60 câu / 60 phút</h1>
+  <div class="notes" style="margin-top:14px;padding:16px 18px">
+    <p style="margin-top:0">Đề gồm ${EXAM_N} câu, mỗi chương ${PER_CH} câu chọn ngẫu nhiên, thứ tự câu và đáp án được xáo trộn. Mỗi lần vào là một đề mới.</p>
+    <ul><li>Đồng hồ đếm ngược 60 phút, hết giờ bài tự nộp.</li><li>Trong lúc thi không hiện đáp án. Nộp bài xong mới xem điểm, đáp án và giải thích.</li><li>Bấm số câu ở bảng phía trên để nhảy nhanh tới câu đó.</li></ul>
+  </div>
+  <div class="row" style="margin-top:14px"><button class="btn primary" id="begin">Bắt đầu tính giờ</button></div>`;
+  app.querySelector('#back').onclick=()=>location.hash='';
+  app.querySelector('#begin').onclick=()=>{
+    let items=[];
+    CHAPTERS.forEach(c=>{shuffle(c.qs.map((_,i)=>i)).slice(0,PER_CH).forEach(i=>items.push(inst(c.id,c.qs[i],i)))});
+    session={mode:'exam',items:shuffle(items),start:Date.now(),done:false};
+    renderExam();
+    tick=setInterval(()=>{
+      if(session.done)return;
+      const left=EXAM_SEC-(Date.now()-session.start)/1000;
+      const t=document.getElementById('timer');
+      if(t){t.textContent='⏳ '+fmt(left);t.classList.toggle('warn',left<300)}
+      if(left<=0){finishExam(true)}
+    },500);
+  };
+}
+
+function renderExam(){
+  const s=session;
+  const answered=s.items.filter(x=>x.pick!==null).length;
+  const left=EXAM_SEC-(Date.now()-s.start)/1000;
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Phòng thi thử</span></div>
+  ${s.done?resultBlock():''}
+  <div class="bar">
+    <span class="timer ${!s.done&&left<300?'warn':''}" id="timer">${s.done?'⏱ '+fmt((s.end-s.start)/1000):'⏳ '+fmt(left)}</span>
+    <div class="progress"><span style="width:${answered/s.items.length*100}%"></span></div>
+    <span class="muted" style="font-variant-numeric:tabular-nums">${answered}/${s.items.length}</span>
+    ${s.done?'':'<button class="btn primary" id="submit">Nộp bài</button>'}
+  </div>
+  <div class="navgrid">${s.items.map((it,i)=>{let c='';if(s.done)c=it.pick===it.ans?'r':'w';else if(it.pick!==null)c='done';return `<button class="${c}" data-go="${i}">${i+1}</button>`}).join('')}</div>
+  <div id="qs">${s.items.map((it,i)=>qHTML(it,i,s.done)).join('')}</div>
+  ${s.done?'':'<div class="row"><button class="btn primary" id="submit2">Nộp bài</button></div>'}`;
+  app.querySelector('#back').onclick=()=>{
+    if(!s.done)modal('<h2>Rời phòng thi?</h2><p style="margin:0">Bài đang làm sẽ bị hủy.</p>',[{label:'Ở lại'},{label:'Rời đi',primary:true,fn:()=>{stopTimer();session=null;location.hash=''}}]);
+    else location.hash='';
+  };
+  app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>document.getElementById('q'+b.dataset.go).scrollIntoView({behavior:'smooth'}));
+  bindQs();
+  if(!s.done){
+    const sub=()=>{const l=s.items.filter(x=>x.pick===null).length;
+      modal(`<h2>Nộp bài?</h2><p style="margin:0">${l?`Còn <b>${l}</b> câu chưa làm.`:'Đã làm hết 60 câu.'} Nộp xong sẽ không sửa được nữa.</p>`,[{label:'Làm tiếp'},{label:'Nộp bài',primary:true,fn:()=>finishExam(false)}])};
+    app.querySelector('#submit').onclick=sub;app.querySelector('#submit2').onclick=sub;
+  } else bindResult();
+}
+
+function finishExam(auto){
+  const s=session;if(s.done)return;
+  s.done=true;s.end=Math.min(Date.now(),s.start+EXAM_SEC*1000);stopTimer();
+  const score=s.items.filter(x=>x.pick===x.ans).length;
+  const ex=store.get('exams',[]);ex.push({score,at:Date.now()});store.set('exams',ex.slice(-20));
+  document.getElementById('modal').classList.remove('show');
+  renderExam();scrollTo(0,0);
+  if(auto)modal('<h2>Hết giờ!</h2><p style="margin:0">Bài đã được nộp tự động.</p>',[{label:'Xem kết quả',primary:true}]);
+}
+
+// ---------- ROUTER ----------
+function route(){
+  const h=location.hash.slice(1);
+  let m=h.match(/^chuong-(\d)$/);
+  if(m){chapter(+m[1],'notes');scrollTo(0,0);return}
+  if(h==='thi-thu'){exam(false);scrollTo(0,0);return}
+  home();
+}
+addEventListener('hashchange',route);
+route();
+})();
+</script>
+</body>
+</html>
