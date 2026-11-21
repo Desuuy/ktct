@@ -112,6 +112,14 @@ button.card:hover{border-color:var(--accent)}
 .tip{background:var(--accent-soft);padding:8px 12px;border-radius:8px}
 div.opt{cursor:default}
 .tabs{flex-wrap:wrap}
+.grid.stats{grid-template-columns:repeat(4,1fr)}
+.stats .card{padding:12px}.stats .num{font-size:1.6rem}
+@media (max-width:640px){.grid.stats{grid-template-columns:repeat(2,1fr)}}
+.hrow{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.hmain .t{font-weight:600}.hscore{display:grid;justify-items:end;gap:2px}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+@media (max-width:560px){.hrow{grid-template-columns:1fr auto}.hrow .row{grid-column:1/-1}}
+.hist-card{grid-template-columns:1fr auto;align-items:center}
 .foot{margin-top:28px;font-size:.88rem;color:var(--muted);text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media (max-width:420px){h1{font-size:1.45rem}.score .big{font-size:2.1rem}}
@@ -163,7 +171,7 @@ qs: [
 ["Tác phẩm \"Của cải của các dân tộc\" (1776) là của:", ["Adam Smith", "David Ricardo", "William Petty", "Ph. Ăngghen"], 0, "Adam Smith xuất bản 'Nghiên cứu về bản chất và nguồn gốc của cải của các dân tộc' năm 1776."],
 ["Đóng góp lớn nhất của KTCT tư sản cổ điển Anh là:", ["Xây dựng lý thuyết giá trị – lao động", "Phát hiện tính hai mặt của lao động sản xuất hàng hóa", "Xây dựng học thuyết giá trị thặng dư", "Phân tích chủ nghĩa tư bản độc quyền"], 0, "KTCT cổ điển Anh khẳng định lao động là nguồn gốc của giá trị. Tính hai mặt của lao động và học thuyết GTTD là phát hiện của C. Mác."],
 ["Tác phẩm tiêu biểu nhất thể hiện lý luận KTCT của C. Mác là:", ["Bộ Tư bản", "Tuyên ngôn của Đảng Cộng sản", "Hệ tư tưởng Đức", "Chủ nghĩa đế quốc, giai đoạn tột cùng của CNTB"], 0, "Bộ Tư bản là tác phẩm đồ sộ nhất, trình bày học thuyết KTCT của Mác. 'Chủ nghĩa đế quốc…' là tác phẩm của Lênin."],
-["Người kế thừa và phát triển KTCT của Mác trong điều kiện CNTB độc quyền là:", ["V.I. Lênin", "Ph. Ăngghen", "D. Ricardo", "J.M. Keynes"], 0, "Lênin phân tích CNTB độc quyền, độc quyền nhà nước và đề xuất lý luận về thời kỳ quá độ (NEP)."],
+["Người kế thừa và phát triển KTCT của Mác trong điều kiện CNTB độc quyền là:", ["V.I. Lênin", "Ph. Ăngghen", "D. Ricardo", "J.M. Keynes"], 0, "Lênin phân tích CNTB độc quyền, độc quyền nhà nước và lý luận về thời kỳ quá độ lên CNXH."],
 ["Đối tượng nghiên cứu của KTCT Mác – Lênin là:", ["Các quan hệ xã hội của sản xuất và trao đổi trong mối liên hệ biện chứng với LLSX và kiến trúc thượng tầng", "Lực lượng sản xuất và các yếu tố kỹ thuật của sản xuất", "Các hoạt động mua bán trên thị trường", "Các chính sách kinh tế của nhà nước"], 0, "KTCT Mác – Lênin nghiên cứu quan hệ sản xuất và trao đổi, không tách rời LLSX và kiến trúc thượng tầng tương ứng."],
 ["Mục đích nghiên cứu ở tầng cao nhất của KTCT Mác – Lênin là:", ["Phát hiện các quy luật kinh tế chi phối quan hệ giữa người với người trong sản xuất và trao đổi", "Xây dựng chính sách kinh tế cho nhà nước", "Hướng dẫn doanh nghiệp tối đa hóa lợi nhuận", "Mô tả các hiện tượng kinh tế"], 0, "Mục đích là tìm ra quy luật kinh tế; từ đó vận dụng vào thực tiễn."],
 ["Quy luật kinh tế là:", ["Những mối liên hệ bản chất, khách quan, lặp đi lặp lại của các hiện tượng và quá trình kinh tế", "Những quy định do nhà nước ban hành để quản lý kinh tế", "Ý chí chủ quan của con người trong hoạt động kinh tế", "Các nguyên tắc kinh doanh của doanh nghiệp"], 0, "Quy luật kinh tế mang tính khách quan; quy định của nhà nước là chính sách, mang tính chủ quan."],
@@ -1016,7 +1024,41 @@ const EXTRA2 = {
 ]
 };
 
-CHAPTERS.forEach(c=>{c.notes=NOTES[c.id];if(EXTRA[c.id])c.qs=c.qs.concat(EXTRA[c.id]);if(EXTRA2[c.id])c.qs=c.qs.concat(EXTRA2[c.id]);});
+// Câu hay gặp trong bộ đề ôn tập KTCT mà sinh viên HUFLIT đang dùng (bộ "600 câu" lưu hành rộng rãi).
+// Chỉ lấy câu có đáp án được ít nhất 1 bộ đề đánh dấu VÀ khớp lý luận giáo trình; câu tính toán đã tự tính lại.
+const HF = " (Câu hay gặp trong bộ đề ôn tập KTCT phổ biến, sinh viên HUFLIT cũng dùng.)";
+const EXTRA3 = {
+1: [
+["Ai được C. Mác coi là người sáng lập ra kinh tế chính trị tư sản cổ điển?", ["W. Petty", "A. Smith", "D. Ricardo", "R.T. Malthus"], 0, "C. Mác đánh giá W. Petty là người sáng lập KTCT tư sản cổ điển Anh." + HF],
+["Ai được coi là nhà kinh tế của thời kỳ công trường thủ công?", ["A. Smith", "W. Petty", "D. Ricardo", "R.T. Malthus"], 0, "A. Smith là nhà kinh tế tiêu biểu của thời kỳ công trường thủ công; D. Ricardo thuộc thời kỳ đại công nghiệp cơ khí." + HF],
+["D. Ricardo là nhà kinh tế của thời kỳ nào?", ["Thời kỳ đại công nghiệp cơ khí", "Thời kỳ tích lũy nguyên thủy TBCN", "Thời kỳ hiệp tác giản đơn", "Thời kỳ công trường thủ công"], 0, "D. Ricardo (1772–1823) là nhà kinh tế của thời kỳ đại công nghiệp cơ khí, người hoàn thiện lý thuyết giá trị – lao động của KTCT cổ điển Anh." + HF],
+["Hoạt động nào của con người được coi là cơ bản nhất và là cơ sở của đời sống xã hội?", ["Hoạt động sản xuất của cải vật chất", "Hoạt động chính trị", "Hoạt động khoa học", "Hoạt động nghệ thuật, thể thao"], 0, "Sản xuất của cải vật chất là cơ sở tồn tại và phát triển của xã hội loài người." + HF],
+["Quá trình sản xuất là sự kết hợp của các yếu tố:", ["Sức lao động với đối tượng lao động và tư liệu lao động", "Sức lao động với công cụ lao động", "Lao động với tư liệu lao động", "Người lao động với máy móc"], 0, "Ba yếu tố cơ bản của quá trình sản xuất: sức lao động, đối tượng lao động và tư liệu lao động (hai yếu tố sau hợp thành tư liệu sản xuất)." + HF]
+],
+2: [
+["Lao động giản đơn là:", ["Lao động không đòi hỏi phải qua đào tạo, huấn luyện chuyên môn", "Lao động làm những công việc đơn giản", "Lao động chỉ làm một công đoạn của quá trình sản xuất", "Lao động tạo ra sản phẩm chất lượng thấp"], 0, "Lao động giản đơn là lao động mà người bình thường không cần qua đào tạo cũng làm được; lao động phức tạp phải qua đào tạo." + HF],
+["Lao động trừu tượng là:", ["Sự hao phí sức lao động nói chung (cơ bắp, thần kinh, trí óc) của người sản xuất hàng hóa, không kể hình thức cụ thể", "Lao động có trình độ cao", "Lao động trí óc", "Lao động thành thạo"], 0, "Lao động trừu tượng là lao động đã gạt bỏ hình thức cụ thể; nó tạo ra giá trị của hàng hóa." + HF],
+["Giá trị sử dụng và giá trị của hàng hóa được thừa nhận (thực hiện) thông qua:", ["Thị trường", "Người sản xuất", "Nhà nước", "Ngân hàng"], 0, "Thực hiện giá trị sử dụng và giá trị của hàng hóa là chức năng của thị trường." + HF],
+["Các nhân tố ảnh hưởng đến lượng giá trị của một đơn vị hàng hóa là:", ["Năng suất lao động và tính chất phức tạp của lao động", "Năng suất lao động và cường độ lao động", "Cường độ lao động và tính chất phức tạp của lao động", "Giá cả và cung – cầu"], 0, "Cường độ lao động không làm thay đổi giá trị một đơn vị hàng hóa, nên không phải là nhân tố ảnh hưởng đến lượng giá trị đơn vị." + HF],
+["Trong cùng một thời gian lao động, nếu năng suất lao động tăng 2 lần thì:", ["Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa giảm 2 lần, tổng giá trị không đổi", "Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa không đổi", "Tổng số hàng hóa và tổng giá trị đều tăng 2 lần", "Tổng số hàng hóa không đổi, giá trị một hàng hóa giảm 2 lần"], 0, "Hao phí lao động không đổi nhưng chia cho số sản phẩm gấp đôi, nên giá trị mỗi sản phẩm giảm một nửa, tổng giá trị giữ nguyên." + HF],
+["Trong cùng một thời gian lao động, nếu cường độ lao động tăng 2 lần thì:", ["Tổng số hàng hóa tăng 2 lần, tổng giá trị tăng 2 lần, giá trị một hàng hóa không đổi", "Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa giảm 2 lần", "Tổng số hàng hóa không đổi, tổng giá trị tăng 2 lần", "Giá trị một hàng hóa tăng 2 lần"], 0, "Tăng cường độ là tăng hao phí lao động trong cùng thời gian, tương đương kéo dài thời gian lao động: sản phẩm và tổng giá trị cùng tăng, giá trị đơn vị không đổi." + HF],
+["Quy luật kinh tế cơ bản của sản xuất và trao đổi hàng hóa là:", ["Quy luật giá trị", "Quy luật cung – cầu", "Quy luật cạnh tranh", "Quy luật lưu thông tiền tệ"], 0, "Ở đâu có sản xuất và trao đổi hàng hóa thì ở đó có sự hoạt động của quy luật giá trị." + HF]
+],
+3: [
+["Việc phân chia tư bản thành tư bản bất biến và tư bản khả biến nhằm khẳng định:", ["Nguồn gốc của giá trị thặng dư", "Phương thức chuyển dịch giá trị của từng bộ phận tư bản", "Tính chất hai mặt của lao động sản xuất hàng hóa", "Tốc độ chu chuyển của tư bản"], 0, "Chỉ tư bản khả biến (mua sức lao động) mới tạo ra GTTD; phân chia này vạch rõ nguồn gốc của GTTD." + HF],
+["Sức lao động là:", ["Toàn bộ thể lực và trí lực tồn tại trong một con người đang sống, được vận dụng khi sản xuất ra một giá trị sử dụng nào đó", "Toàn bộ hoạt động lao động của con người", "Khả năng làm việc của máy móc", "Số giờ làm việc trong ngày"], 0, "Sức lao động là khả năng lao động; lao động là sự tiêu dùng sức lao động trong hiện thực." + HF],
+["Ngày lao động 8 giờ, m' = 100%. Nhờ tăng năng suất lao động xã hội, giá trị sức lao động giảm 25% (độ dài ngày lao động không đổi). Tỷ suất giá trị thặng dư mới là:", ["Khoảng 166,7%", "125%", "133,3%", "200%"], 0, "Ban đầu: thời gian tất yếu 4h, thặng dư 4h. Giá trị SLĐ giảm 25% → thời gian tất yếu còn 3h, thặng dư 5h → m' = 5/3 ≈ 166,7%. Đây là GTTD tương đối." + HF],
+["Một tư bản 1.000.000 USD, cấu tạo hữu cơ c/v = 4/1, m' = 100%. Tỷ suất lợi nhuận là:", ["20%", "25%", "100%", "80%"], 0, "v = 200.000, c = 800.000, m = 100% × 200.000 = 200.000 → p' = m/(c + v) = 200.000/1.000.000 = 20%." + HF],
+["Với các điều kiện khác không đổi, khi cấu tạo hữu cơ của tư bản (c/v) tăng lên thì tỷ suất lợi nhuận:", ["Giảm xuống", "Tăng lên", "Không đổi", "Bằng tỷ suất giá trị thặng dư"], 0, "Cấu tạo hữu cơ là một nhân tố ảnh hưởng đến p': c/v tăng thì phần v (nguồn tạo ra m) chiếm tỷ trọng nhỏ hơn, nên p' có xu hướng giảm." + HF],
+["Với các điều kiện khác không đổi, khi tốc độ chu chuyển của tư bản tăng lên thì tỷ suất lợi nhuận (tính theo năm):", ["Tăng lên", "Giảm xuống", "Không đổi", "Bằng không"], 0, "Chu chuyển nhanh thì tư bản khả biến được sử dụng nhiều lần hơn trong năm, tạo ra nhiều GTTD hơn trên cùng lượng tư bản ứng trước." + HF]
+],
+4: [
+["Nhận xét của Lênin về việc một người \"hôm nay là bộ trưởng, ngày mai là chủ ngân hàng, ngày kia lại là bộ trưởng\" phản ánh đặc điểm nào?", ["Sự kết hợp về nhân sự giữa tổ chức độc quyền và nhà nước trong CNTB độc quyền nhà nước", "Cạnh tranh tự do giữa các doanh nghiệp", "Xuất khẩu tư bản", "Sự phân chia thế giới về lãnh thổ"], 0, "Kết hợp về nhân sự là một trong ba biểu hiện chủ yếu của độc quyền nhà nước trong CNTB." + HF],
+["Vai trò lịch sử của chủ nghĩa tư bản thể hiện ở:", ["Phát triển nhanh lực lượng sản xuất", "Chuyển nền sản xuất nhỏ thành nền sản xuất lớn hiện đại", "Thực hiện xã hội hóa sản xuất", "Cả ba phương án trên"], 3, "CNTB phát triển mạnh LLSX, chuyển sản xuất nhỏ thành sản xuất lớn hiện đại và thúc đẩy xã hội hóa sản xuất." + HF, 1]
+]
+};
+
+CHAPTERS.forEach(c=>{c.notes=NOTES[c.id];if(EXTRA[c.id])c.qs=c.qs.concat(EXTRA[c.id]);if(EXTRA2[c.id])c.qs=c.qs.concat(EXTRA2[c.id]);if(EXTRA3[c.id])c.qs=c.qs.concat(EXTRA3[c.id]);});
 </script>
 <script>
 (function(){
@@ -1046,6 +1088,98 @@ function modal(html,actions){
   b.querySelector('.btn.primary')?.focus();
 }
 
+// ---------- HISTORY ----------
+const HIST_MAX=40;
+function loadHist(){const h=store.get('history',[]);return Array.isArray(h)?h:[]}
+function saveAttempt(rec){
+  let h=loadHist();h.push(rec);h=h.slice(-HIST_MAX);
+  // localStorage có giới hạn dung lượng: nếu đầy thì bỏ bớt lần cũ nhất
+  while(h.length){try{localStorage.setItem('ktct_history',JSON.stringify(h));return true}catch(e){if(h.length===1)return false;h.shift()}}
+  return false;
+}
+function snapshot(items){return items.map(x=>({ch:x.ch,q:x.q,o:x.opts,a:x.ans,e:x.exp,p:x.pick}))}
+function fmtDate(ts){const d=new Date(ts);const z=n=>String(n).padStart(2,'0');return `${z(d.getHours())}:${z(d.getMinutes())} · ${z(d.getDate())}/${z(d.getMonth()+1)}/${d.getFullYear()}`}
+function recordSession(s){
+  const correct=s.items.filter(x=>x.pick===x.ans).length;
+  let kind,title;
+  if(s.mode==='exam'){kind='exam';title='Thi thử 60 câu / 60 phút'}
+  else if(!s.c.id){kind='retry';title='Làm lại câu sai của đề thi thử'}
+  else if(s.items.length<s.c.qs.length){kind='retry';title='Làm lại câu sai · Chương '+s.c.id}
+  else {kind='chapter';title='Chương '+s.c.id+': '+s.c.short}
+  saveAttempt({id:Date.now(),kind,ch:s.c?s.c.id:0,title,at:s.end,secs:Math.round((s.end-s.start)/1000),correct,total:s.items.length,items:snapshot(s.items)});
+}
+
+function historyPage(){
+  stopTimer();session=null;
+  const h=loadHist().slice().reverse();
+  const n=h.length, best=n?Math.max(...h.map(r=>r.correct/r.total)):0, avg=n?h.reduce((s,r)=>s+r.correct/r.total,0)/n:0;
+  const exams=h.filter(r=>r.kind==='exam');
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Lịch sử làm bài</span></div>
+  <h1>Lịch sử làm bài</h1>
+  <p class="muted" style="margin:6px 0 14px">Lưu ${HIST_MAX} lần làm gần nhất trên trình duyệt này. Đổi máy, đổi trình duyệt hoặc xóa dữ liệu trình duyệt thì lịch sử sẽ mất.</p>
+  ${n?`<div class="grid stats">
+    <div class="card"><span class="muted">Số lần đã làm</span><span class="num">${n}</span></div>
+    <div class="card"><span class="muted">Điểm trung bình (hệ 10)</span><span class="num">${(Math.round(avg*100)/10).toLocaleString('vi-VN')}</span></div>
+    <div class="card"><span class="muted">Cao nhất (hệ 10)</span><span class="num">${(Math.round(best*100)/10).toLocaleString('vi-VN')}</span></div>
+    <div class="card"><span class="muted">Số lần thi thử</span><span class="num">${exams.length}</span></div>
+  </div>
+  <div class="row" style="margin:14px 0">
+    <label class="toggle">Lọc: <select id="flt" class="btn" style="padding:6px 10px">
+      <option value="all">Tất cả</option><option value="exam">Thi thử</option>${CHAPTERS.map(c=>`<option value="${c.id}">Chương ${c.id}</option>`).join('')}<option value="retry">Làm lại câu sai</option>
+    </select></label>
+    <button class="btn" id="clearAll" style="margin-left:auto">Xóa toàn bộ lịch sử</button>
+  </div>
+  <div id="hlist"></div>`:`<div class="notes" style="padding:16px 18px">Chưa có lần làm nào. Làm xong một bài và bấm <b>Nộp bài</b>, kết quả sẽ được lưu ở đây.</div>`}`;
+  app.querySelector('#back').onclick=()=>location.hash='';
+  if(!n)return;
+  const list=app.querySelector('#hlist');
+  const draw=f=>{
+    const rows=h.filter(r=>f==='all'||(f==='exam'&&r.kind==='exam')||(f==='retry'&&r.kind==='retry')||(String(r.ch)===f&&r.kind==='chapter'));
+    list.innerHTML=rows.length?rows.map(r=>{const sc=r.correct/r.total;const cls=sc>=0.8?'ok':sc>=0.5?'':'bad';
+      return `<div class="hrow"><div class="hmain"><div class="t">${esc(r.title)}</div><div class="muted" style="font-size:.9rem">${fmtDate(r.at)} · làm trong ${fmt(r.secs)}</div></div>
+      <div class="hscore"><span class="pill ${cls}">${r.correct}/${r.total}</span><span class="muted" style="font-size:.85rem">Điểm ${ten(r.correct,r.total)}</span></div>
+      <div class="row"><button class="btn primary" data-v="${r.id}">Xem lại</button><button class="btn" data-d="${r.id}" aria-label="Xóa lần làm này">Xóa</button></div></div>`}).join(''):'<p class="muted">Không có lần làm nào trong mục này.</p>';
+    list.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>location.hash='xem-'+b.dataset.v);
+    list.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>modal('<h2>Xóa lần làm này?</h2>',[{label:'Hủy'},{label:'Xóa',primary:true,fn:()=>{store.set('history',loadHist().filter(r=>String(r.id)!==b.dataset.d));historyPage()}}]));
+  };
+  const sel=app.querySelector('#flt');sel.onchange=()=>draw(sel.value);draw('all');
+  app.querySelector('#clearAll').onclick=()=>modal('<h2>Xóa toàn bộ lịch sử?</h2><p style="margin:0">Không khôi phục lại được.</p>',[{label:'Hủy'},{label:'Xóa hết',primary:true,fn:()=>{store.set('history',[]);historyPage()}}]);
+}
+
+function reviewAttempt(id){
+  stopTimer();session=null;
+  const r=loadHist().find(x=>String(x.id)===String(id));
+  if(!r){location.hash='lich-su';return}
+  const items=r.items.map((x,i)=>({ch:x.ch,idx:i,q:x.q,opts:x.o,ans:x.a,exp:x.e,pick:x.p}));
+  const wrong=items.filter(x=>x.pick!==x.ans).length;
+  const by=CHAPTERS.map(c=>{const its=items.filter(x=>x.ch===c.id);return its.length?`<tr><td>Chương ${c.id}: ${esc(c.short)}</td><td>${its.filter(x=>x.pick===x.ans).length}/${its.length}</td></tr>`:''}).join('');
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Lịch sử</button><span class="eyebrow">Xem lại bài đã làm</span></div>
+  <h1>${esc(r.title)}</h1>
+  <div class="result" style="margin-top:12px">
+    <div class="score"><span class="big">${r.correct}/${r.total}</span><span>Điểm hệ 10: <b>${ten(r.correct,r.total)}</b></span><span class="muted">${fmtDate(r.at)} · làm trong ${fmt(r.secs)}</span></div>
+    ${r.kind==='exam'||r.kind==='retry'?`<table class="breakdown">${by}</table>`:''}
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="onlyWrong"> Chỉ xem ${wrong} câu sai</label>
+      ${wrong?`<button class="btn primary" id="redo" style="margin-left:auto">Làm lại ${wrong} câu sai</button>`:''}
+    </div>
+  </div>
+  <div id="qs"></div>`;
+  app.querySelector('#back').onclick=()=>location.hash='lich-su';
+  const qs=app.querySelector('#qs');
+  const draw=only=>{qs.innerHTML=items.map((it,i)=>only&&it.pick===it.ans?'':qHTML(it,i,true)).join('')};
+  app.querySelector('#onlyWrong').onchange=e=>draw(e.target.checked);draw(false);
+  const redo=app.querySelector('#redo');
+  if(redo)redo.onclick=()=>{
+    // dùng lại đúng câu hỏi đã lưu, xáo lại thứ tự đáp án
+    const again=items.filter(x=>x.pick!==x.ans).map(x=>{const ord=shuffle(x.opts.map((_,k)=>k));return {ch:x.ch,idx:x.idx,q:x.q,opts:ord.map(k=>x.opts[k]),ans:ord.indexOf(x.ans),exp:x.exp,pick:null}});
+    app.innerHTML=`<div class="top"><button class="back" id="back">← Lịch sử</button><span class="eyebrow">Làm lại câu sai</span></div><div id="pane"></div>`;
+    app.querySelector('#back').onclick=()=>location.hash='lich-su';
+    const ch=CHAPTERS.find(c=>c.id===r.ch);
+    startPractice(r.kind==='chapter'&&ch?ch:{id:0,qs:[],title:'Câu sai',short:'Câu sai'},again,app.querySelector('#pane'));
+    scrollTo(0,0);
+  };
+}
+
 // ---------- HOME ----------
 function home(){
   stopTimer();session=null;
@@ -1062,6 +1196,11 @@ function home(){
     <div class="muted" style="font-size:.92rem">Đề trộn ngẫu nhiên 10 câu mỗi chương, hết giờ tự nộp bài.${exams.length?` Lần gần nhất: <b>${exams[exams.length-1].score}/60</b>.`:''}</div></div>
     <span class="go">Vào thi</span>
   </button>
+  <button class="card hist-card" id="goHist" style="margin-bottom:12px">
+    <div><div class="t">Lịch sử làm bài</div>
+    <div class="muted" style="font-size:.92rem">${(()=>{const h=loadHist();if(!h.length)return 'Chưa có lần làm nào. Nộp bài xong sẽ được lưu ở đây để xem lại.';const l=h[h.length-1];return `Đã làm ${h.length} lần. Gần nhất: ${esc(l.title)}, <b>${l.correct}/${l.total}</b> lúc ${fmtDate(l.at)}.`})()}</div></div>
+    <span class="pill">Xem</span>
+  </button>
   <div class="grid">
   ${CHAPTERS.map(c=>{const b=best[c.id];return `<button class="card" data-ch="${c.id}">
     <span class="num">Chương ${c.id}</span>
@@ -1077,12 +1216,14 @@ function home(){
       <li><b>Lưu ý:</b> bản thảo và bản in 2021 khác nhau ở một số chỗ về bố cục và câu chữ. Đề thi có thể trích nguyên văn bản in 2021, nên khi thấy chữ trong đề hơi khác thì hiểu theo ý.</li>
       <li><b>Đã loại bỏ:</b> các câu hỏi về chi tiết không có trong giáo trình (câu nói của W. Petty, năm xuất bản tập I Bộ Tư bản, chính sách NEP, năm gia nhập ASEAN/APEC, EVFTA) và cách nói "điều kiện cần/đủ".</li>
       <li><b>Rà soát lần cuối:</b> bỏ thêm 2 câu không tìm được nguồn xác nhận (lý do hoàn thiện thể chế; "lợi ích cá nhân là cơ sở của các lợi ích khác"), sửa định nghĩa cách mạng công nghiệp theo đúng văn bản giáo trình. Những đoạn lý thuyết còn gắn nhãn <span class="unv">Chưa đối chiếu nguyên văn giáo trình</span> là kiến thức đúng nhưng chưa tìm được câu chữ gốc trong sách. Khái niệm CNH, HĐH của Hội nghị TW 7 khóa VII (1994) đã được xác nhận qua tài liệu của Đại học Huế.</li>
+      <li><b>Câu hay gặp trong đề ôn HUFLIT:</b> 20 câu có ghi chú "Câu hay gặp trong bộ đề ôn tập KTCT phổ biến" lấy từ bộ đề ôn tập lưu hành rộng rãi mà sinh viên HUFLIT (học phần 1010452) đang dùng. Chỉ giữ câu mà bộ đề đánh dấu đáp án và đáp án đó khớp với lý luận giáo trình; các câu tính toán đã được tính lại. Lưu ý: một số bộ đề trên mạng có đáp án sai (ví dụ đánh dấu "Tình cảnh giai cấp công nhân Anh" là tác phẩm cô đọng nhất của Mác thay vì Bộ Tư bản), những câu như vậy không được đưa vào.</li>
       <li><b>Câu hỏi bổ sung từ Quizlet:</b> 19 câu có ghi chú "Dạng câu hỏi thường gặp trong các bộ đề ôn thi trên Quizlet" được tham khảo từ các bộ đề sinh viên (ví dụ bộ đề của ĐH Phenikaa theo đúng tên 6 chương của giáo trình 2021). Chỉ lấy những câu mà nhiều bộ đề cho đáp án thống nhất và khớp với kiến thức giáo trình; câu hỏi được viết lại, không sao chép nguyên bộ. Quizlet là nội dung do sinh viên tự soạn, không phải nguồn chính thức.</li>
       <li><b>Đặc biệt:</b> giáo trình viết kinh tế tư nhân là "một động lực quan trọng"; Nghị quyết 68-NQ/TW (2025) đã nâng thành "động lực quan trọng nhất". Nên hỏi lại giảng viên đề thi dùng cách nói nào.</li>
     </ul>
   </details>
   <p class="foot">Chúc Cún thi tốt nhé!</p>`;
   app.querySelector('#goExam').onclick=()=>location.hash='thi-thu';
+  app.querySelector('#goHist').onclick=()=>location.hash='lich-su';
   app.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>location.hash='chuong-'+b.dataset.ch);
 }
 
@@ -1170,6 +1311,7 @@ function finishPractice(){
   const s=session;s.done=true;s.end=Date.now();
   const correct=s.items.filter(x=>x.pick===x.ans).length;
   if(s.items.length===s.c.qs.length){const best=store.get('best',{});if(best[s.c.id]==null||correct>best[s.c.id]){best[s.c.id]=correct;store.set('best',best)}}
+  recordSession(s);
   renderPractice();scrollTo(0,0);
 }
 
@@ -1213,6 +1355,7 @@ function resultBlock(){
     <div class="row">
       ${wrong?`<button class="btn primary" id="retryWrong">Làm lại ${wrong} câu sai</button>`:''}
       <button class="btn" id="retryAll">${s.mode==='exam'?'Thi đề mới':'Làm lại cả chương'}</button>
+      <button class="btn" id="histBtn">Lịch sử làm bài</button>
       <button class="btn" id="home2">Về trang chủ</button>
     </div>
     <p class="muted" style="margin:0;font-size:.92rem">Kéo xuống để xem đáp án và giải thích từng câu.</p>
@@ -1222,6 +1365,7 @@ function resultBlock(){
 function bindResult(){
   const s=session;
   app.querySelector('#home2').onclick=()=>location.hash='';
+  app.querySelector('#histBtn').onclick=()=>location.hash='lich-su';
   app.querySelector('#retryAll').onclick=()=>{if(s.mode==='exam')exam(true);else chapter(s.c.id,'quiz')};
   const rw=app.querySelector('#retryWrong');
   if(rw)rw.onclick=()=>{
@@ -1297,6 +1441,7 @@ function finishExam(auto){
   s.done=true;s.end=Math.min(Date.now(),s.start+EXAM_SEC*1000);stopTimer();
   const score=s.items.filter(x=>x.pick===x.ans).length;
   const ex=store.get('exams',[]);ex.push({score,at:Date.now()});store.set('exams',ex.slice(-20));
+  recordSession(s);
   document.getElementById('modal').classList.remove('show');
   renderExam();scrollTo(0,0);
   if(auto)modal('<h2>Hết giờ!</h2><p style="margin:0">Bài đã được nộp tự động.</p>',[{label:'Xem kết quả',primary:true}]);
@@ -1308,6 +1453,9 @@ function route(){
   let m=h.match(/^chuong-(\d)$/);
   if(m){chapter(+m[1],'notes');scrollTo(0,0);return}
   if(h==='thi-thu'){exam(false);scrollTo(0,0);return}
+  if(h==='lich-su'){historyPage();scrollTo(0,0);return}
+  m=h.match(/^xem-(\d+)$/);
+  if(m){reviewAttempt(m[1]);scrollTo(0,0);return}
   home();
 }
 addEventListener('hashchange',route);

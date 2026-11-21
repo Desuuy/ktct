@@ -454,3 +454,37 @@ const EXTRA2 = {
 ["Nhận thức về công nghiệp hóa ở Việt Nam đã trải qua nhiều mốc phát triển, bắt đầu từ Đại hội nào của Đảng?", ["Đại hội III (năm 1960)", "Đại hội VI (năm 1986)", "Đại hội II (năm 1951)", "Đại hội IX (năm 2001)"], 0, "Đại hội III (1960) đặt ra đường lối công nghiệp hóa; từ đó nhận thức về CNH được bổ sung qua nhiều kỳ đại hội." + QZ]
 ]
 };
+
+// Câu hay gặp trong bộ đề ôn tập KTCT mà sinh viên HUFLIT đang dùng (bộ "600 câu" lưu hành rộng rãi).
+// Chỉ lấy câu có đáp án được ít nhất 1 bộ đề đánh dấu VÀ khớp lý luận giáo trình; câu tính toán đã tự tính lại.
+const HF = " (Câu hay gặp trong bộ đề ôn tập KTCT phổ biến, sinh viên HUFLIT cũng dùng.)";
+const EXTRA3 = {
+1: [
+["Ai được C. Mác coi là người sáng lập ra kinh tế chính trị tư sản cổ điển?", ["W. Petty", "A. Smith", "D. Ricardo", "R.T. Malthus"], 0, "C. Mác đánh giá W. Petty là người sáng lập KTCT tư sản cổ điển Anh." + HF],
+["Ai được coi là nhà kinh tế của thời kỳ công trường thủ công?", ["A. Smith", "W. Petty", "D. Ricardo", "R.T. Malthus"], 0, "A. Smith là nhà kinh tế tiêu biểu của thời kỳ công trường thủ công; D. Ricardo thuộc thời kỳ đại công nghiệp cơ khí." + HF],
+["D. Ricardo là nhà kinh tế của thời kỳ nào?", ["Thời kỳ đại công nghiệp cơ khí", "Thời kỳ tích lũy nguyên thủy TBCN", "Thời kỳ hiệp tác giản đơn", "Thời kỳ công trường thủ công"], 0, "D. Ricardo (1772–1823) là nhà kinh tế của thời kỳ đại công nghiệp cơ khí, người hoàn thiện lý thuyết giá trị – lao động của KTCT cổ điển Anh." + HF],
+["Hoạt động nào của con người được coi là cơ bản nhất và là cơ sở của đời sống xã hội?", ["Hoạt động sản xuất của cải vật chất", "Hoạt động chính trị", "Hoạt động khoa học", "Hoạt động nghệ thuật, thể thao"], 0, "Sản xuất của cải vật chất là cơ sở tồn tại và phát triển của xã hội loài người." + HF],
+["Quá trình sản xuất là sự kết hợp của các yếu tố:", ["Sức lao động với đối tượng lao động và tư liệu lao động", "Sức lao động với công cụ lao động", "Lao động với tư liệu lao động", "Người lao động với máy móc"], 0, "Ba yếu tố cơ bản của quá trình sản xuất: sức lao động, đối tượng lao động và tư liệu lao động (hai yếu tố sau hợp thành tư liệu sản xuất)." + HF]
+],
+2: [
+["Lao động giản đơn là:", ["Lao động không đòi hỏi phải qua đào tạo, huấn luyện chuyên môn", "Lao động làm những công việc đơn giản", "Lao động chỉ làm một công đoạn của quá trình sản xuất", "Lao động tạo ra sản phẩm chất lượng thấp"], 0, "Lao động giản đơn là lao động mà người bình thường không cần qua đào tạo cũng làm được; lao động phức tạp phải qua đào tạo." + HF],
+["Lao động trừu tượng là:", ["Sự hao phí sức lao động nói chung (cơ bắp, thần kinh, trí óc) của người sản xuất hàng hóa, không kể hình thức cụ thể", "Lao động có trình độ cao", "Lao động trí óc", "Lao động thành thạo"], 0, "Lao động trừu tượng là lao động đã gạt bỏ hình thức cụ thể; nó tạo ra giá trị của hàng hóa." + HF],
+["Giá trị sử dụng và giá trị của hàng hóa được thừa nhận (thực hiện) thông qua:", ["Thị trường", "Người sản xuất", "Nhà nước", "Ngân hàng"], 0, "Thực hiện giá trị sử dụng và giá trị của hàng hóa là chức năng của thị trường." + HF],
+["Các nhân tố ảnh hưởng đến lượng giá trị của một đơn vị hàng hóa là:", ["Năng suất lao động và tính chất phức tạp của lao động", "Năng suất lao động và cường độ lao động", "Cường độ lao động và tính chất phức tạp của lao động", "Giá cả và cung – cầu"], 0, "Cường độ lao động không làm thay đổi giá trị một đơn vị hàng hóa, nên không phải là nhân tố ảnh hưởng đến lượng giá trị đơn vị." + HF],
+["Trong cùng một thời gian lao động, nếu năng suất lao động tăng 2 lần thì:", ["Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa giảm 2 lần, tổng giá trị không đổi", "Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa không đổi", "Tổng số hàng hóa và tổng giá trị đều tăng 2 lần", "Tổng số hàng hóa không đổi, giá trị một hàng hóa giảm 2 lần"], 0, "Hao phí lao động không đổi nhưng chia cho số sản phẩm gấp đôi, nên giá trị mỗi sản phẩm giảm một nửa, tổng giá trị giữ nguyên." + HF],
+["Trong cùng một thời gian lao động, nếu cường độ lao động tăng 2 lần thì:", ["Tổng số hàng hóa tăng 2 lần, tổng giá trị tăng 2 lần, giá trị một hàng hóa không đổi", "Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa giảm 2 lần", "Tổng số hàng hóa không đổi, tổng giá trị tăng 2 lần", "Giá trị một hàng hóa tăng 2 lần"], 0, "Tăng cường độ là tăng hao phí lao động trong cùng thời gian, tương đương kéo dài thời gian lao động: sản phẩm và tổng giá trị cùng tăng, giá trị đơn vị không đổi." + HF],
+["Quy luật kinh tế cơ bản của sản xuất và trao đổi hàng hóa là:", ["Quy luật giá trị", "Quy luật cung – cầu", "Quy luật cạnh tranh", "Quy luật lưu thông tiền tệ"], 0, "Ở đâu có sản xuất và trao đổi hàng hóa thì ở đó có sự hoạt động của quy luật giá trị." + HF]
+],
+3: [
+["Việc phân chia tư bản thành tư bản bất biến và tư bản khả biến nhằm khẳng định:", ["Nguồn gốc của giá trị thặng dư", "Phương thức chuyển dịch giá trị của từng bộ phận tư bản", "Tính chất hai mặt của lao động sản xuất hàng hóa", "Tốc độ chu chuyển của tư bản"], 0, "Chỉ tư bản khả biến (mua sức lao động) mới tạo ra GTTD; phân chia này vạch rõ nguồn gốc của GTTD." + HF],
+["Sức lao động là:", ["Toàn bộ thể lực và trí lực tồn tại trong một con người đang sống, được vận dụng khi sản xuất ra một giá trị sử dụng nào đó", "Toàn bộ hoạt động lao động của con người", "Khả năng làm việc của máy móc", "Số giờ làm việc trong ngày"], 0, "Sức lao động là khả năng lao động; lao động là sự tiêu dùng sức lao động trong hiện thực." + HF],
+["Ngày lao động 8 giờ, m' = 100%. Nhờ tăng năng suất lao động xã hội, giá trị sức lao động giảm 25% (độ dài ngày lao động không đổi). Tỷ suất giá trị thặng dư mới là:", ["Khoảng 166,7%", "125%", "133,3%", "200%"], 0, "Ban đầu: thời gian tất yếu 4h, thặng dư 4h. Giá trị SLĐ giảm 25% → thời gian tất yếu còn 3h, thặng dư 5h → m' = 5/3 ≈ 166,7%. Đây là GTTD tương đối." + HF],
+["Một tư bản 1.000.000 USD, cấu tạo hữu cơ c/v = 4/1, m' = 100%. Tỷ suất lợi nhuận là:", ["20%", "25%", "100%", "80%"], 0, "v = 200.000, c = 800.000, m = 100% × 200.000 = 200.000 → p' = m/(c + v) = 200.000/1.000.000 = 20%." + HF],
+["Với các điều kiện khác không đổi, khi cấu tạo hữu cơ của tư bản (c/v) tăng lên thì tỷ suất lợi nhuận:", ["Giảm xuống", "Tăng lên", "Không đổi", "Bằng tỷ suất giá trị thặng dư"], 0, "Cấu tạo hữu cơ là một nhân tố ảnh hưởng đến p': c/v tăng thì phần v (nguồn tạo ra m) chiếm tỷ trọng nhỏ hơn, nên p' có xu hướng giảm." + HF],
+["Với các điều kiện khác không đổi, khi tốc độ chu chuyển của tư bản tăng lên thì tỷ suất lợi nhuận (tính theo năm):", ["Tăng lên", "Giảm xuống", "Không đổi", "Bằng không"], 0, "Chu chuyển nhanh thì tư bản khả biến được sử dụng nhiều lần hơn trong năm, tạo ra nhiều GTTD hơn trên cùng lượng tư bản ứng trước." + HF]
+],
+4: [
+["Nhận xét của Lênin về việc một người \"hôm nay là bộ trưởng, ngày mai là chủ ngân hàng, ngày kia lại là bộ trưởng\" phản ánh đặc điểm nào?", ["Sự kết hợp về nhân sự giữa tổ chức độc quyền và nhà nước trong CNTB độc quyền nhà nước", "Cạnh tranh tự do giữa các doanh nghiệp", "Xuất khẩu tư bản", "Sự phân chia thế giới về lãnh thổ"], 0, "Kết hợp về nhân sự là một trong ba biểu hiện chủ yếu của độc quyền nhà nước trong CNTB." + HF],
+["Vai trò lịch sử của chủ nghĩa tư bản thể hiện ở:", ["Phát triển nhanh lực lượng sản xuất", "Chuyển nền sản xuất nhỏ thành nền sản xuất lớn hiện đại", "Thực hiện xã hội hóa sản xuất", "Cả ba phương án trên"], 3, "CNTB phát triển mạnh LLSX, chuyển sản xuất nhỏ thành sản xuất lớn hiện đại và thúc đẩy xã hội hóa sản xuất." + HF, 1]
+]
+};

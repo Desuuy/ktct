@@ -112,6 +112,14 @@ button.card:hover{border-color:var(--accent)}
 .tip{background:var(--accent-soft);padding:8px 12px;border-radius:8px}
 div.opt{cursor:default}
 .tabs{flex-wrap:wrap}
+.grid.stats{grid-template-columns:repeat(4,1fr)}
+.stats .card{padding:12px}.stats .num{font-size:1.6rem}
+@media (max-width:640px){.grid.stats{grid-template-columns:repeat(2,1fr)}}
+.hrow{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.hmain .t{font-weight:600}.hscore{display:grid;justify-items:end;gap:2px}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+@media (max-width:560px){.hrow{grid-template-columns:1fr auto}.hrow .row{grid-column:1/-1}}
+.hist-card{grid-template-columns:1fr auto;align-items:center}
 .foot{margin-top:28px;font-size:.88rem;color:var(--muted);text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media (max-width:420px){h1{font-size:1.45rem}.score .big{font-size:2.1rem}}
@@ -151,6 +159,98 @@ function modal(html,actions){
   b.querySelector('.btn.primary')?.focus();
 }
 
+// ---------- HISTORY ----------
+const HIST_MAX=40;
+function loadHist(){const h=store.get('history',[]);return Array.isArray(h)?h:[]}
+function saveAttempt(rec){
+  let h=loadHist();h.push(rec);h=h.slice(-HIST_MAX);
+  // localStorage có giới hạn dung lượng: nếu đầy thì bỏ bớt lần cũ nhất
+  while(h.length){try{localStorage.setItem('ktct_history',JSON.stringify(h));return true}catch(e){if(h.length===1)return false;h.shift()}}
+  return false;
+}
+function snapshot(items){return items.map(x=>({ch:x.ch,q:x.q,o:x.opts,a:x.ans,e:x.exp,p:x.pick}))}
+function fmtDate(ts){const d=new Date(ts);const z=n=>String(n).padStart(2,'0');return `${z(d.getHours())}:${z(d.getMinutes())} · ${z(d.getDate())}/${z(d.getMonth()+1)}/${d.getFullYear()}`}
+function recordSession(s){
+  const correct=s.items.filter(x=>x.pick===x.ans).length;
+  let kind,title;
+  if(s.mode==='exam'){kind='exam';title='Thi thử 60 câu / 60 phút'}
+  else if(!s.c.id){kind='retry';title='Làm lại câu sai của đề thi thử'}
+  else if(s.items.length<s.c.qs.length){kind='retry';title='Làm lại câu sai · Chương '+s.c.id}
+  else {kind='chapter';title='Chương '+s.c.id+': '+s.c.short}
+  saveAttempt({id:Date.now(),kind,ch:s.c?s.c.id:0,title,at:s.end,secs:Math.round((s.end-s.start)/1000),correct,total:s.items.length,items:snapshot(s.items)});
+}
+
+function historyPage(){
+  stopTimer();session=null;
+  const h=loadHist().slice().reverse();
+  const n=h.length, best=n?Math.max(...h.map(r=>r.correct/r.total)):0, avg=n?h.reduce((s,r)=>s+r.correct/r.total,0)/n:0;
+  const exams=h.filter(r=>r.kind==='exam');
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Lịch sử làm bài</span></div>
+  <h1>Lịch sử làm bài</h1>
+  <p class="muted" style="margin:6px 0 14px">Lưu ${HIST_MAX} lần làm gần nhất trên trình duyệt này. Đổi máy, đổi trình duyệt hoặc xóa dữ liệu trình duyệt thì lịch sử sẽ mất.</p>
+  ${n?`<div class="grid stats">
+    <div class="card"><span class="muted">Số lần đã làm</span><span class="num">${n}</span></div>
+    <div class="card"><span class="muted">Điểm trung bình (hệ 10)</span><span class="num">${(Math.round(avg*100)/10).toLocaleString('vi-VN')}</span></div>
+    <div class="card"><span class="muted">Cao nhất (hệ 10)</span><span class="num">${(Math.round(best*100)/10).toLocaleString('vi-VN')}</span></div>
+    <div class="card"><span class="muted">Số lần thi thử</span><span class="num">${exams.length}</span></div>
+  </div>
+  <div class="row" style="margin:14px 0">
+    <label class="toggle">Lọc: <select id="flt" class="btn" style="padding:6px 10px">
+      <option value="all">Tất cả</option><option value="exam">Thi thử</option>${CHAPTERS.map(c=>`<option value="${c.id}">Chương ${c.id}</option>`).join('')}<option value="retry">Làm lại câu sai</option>
+    </select></label>
+    <button class="btn" id="clearAll" style="margin-left:auto">Xóa toàn bộ lịch sử</button>
+  </div>
+  <div id="hlist"></div>`:`<div class="notes" style="padding:16px 18px">Chưa có lần làm nào. Làm xong một bài và bấm <b>Nộp bài</b>, kết quả sẽ được lưu ở đây.</div>`}`;
+  app.querySelector('#back').onclick=()=>location.hash='';
+  if(!n)return;
+  const list=app.querySelector('#hlist');
+  const draw=f=>{
+    const rows=h.filter(r=>f==='all'||(f==='exam'&&r.kind==='exam')||(f==='retry'&&r.kind==='retry')||(String(r.ch)===f&&r.kind==='chapter'));
+    list.innerHTML=rows.length?rows.map(r=>{const sc=r.correct/r.total;const cls=sc>=0.8?'ok':sc>=0.5?'':'bad';
+      return `<div class="hrow"><div class="hmain"><div class="t">${esc(r.title)}</div><div class="muted" style="font-size:.9rem">${fmtDate(r.at)} · làm trong ${fmt(r.secs)}</div></div>
+      <div class="hscore"><span class="pill ${cls}">${r.correct}/${r.total}</span><span class="muted" style="font-size:.85rem">Điểm ${ten(r.correct,r.total)}</span></div>
+      <div class="row"><button class="btn primary" data-v="${r.id}">Xem lại</button><button class="btn" data-d="${r.id}" aria-label="Xóa lần làm này">Xóa</button></div></div>`}).join(''):'<p class="muted">Không có lần làm nào trong mục này.</p>';
+    list.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>location.hash='xem-'+b.dataset.v);
+    list.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>modal('<h2>Xóa lần làm này?</h2>',[{label:'Hủy'},{label:'Xóa',primary:true,fn:()=>{store.set('history',loadHist().filter(r=>String(r.id)!==b.dataset.d));historyPage()}}]));
+  };
+  const sel=app.querySelector('#flt');sel.onchange=()=>draw(sel.value);draw('all');
+  app.querySelector('#clearAll').onclick=()=>modal('<h2>Xóa toàn bộ lịch sử?</h2><p style="margin:0">Không khôi phục lại được.</p>',[{label:'Hủy'},{label:'Xóa hết',primary:true,fn:()=>{store.set('history',[]);historyPage()}}]);
+}
+
+function reviewAttempt(id){
+  stopTimer();session=null;
+  const r=loadHist().find(x=>String(x.id)===String(id));
+  if(!r){location.hash='lich-su';return}
+  const items=r.items.map((x,i)=>({ch:x.ch,idx:i,q:x.q,opts:x.o,ans:x.a,exp:x.e,pick:x.p}));
+  const wrong=items.filter(x=>x.pick!==x.ans).length;
+  const by=CHAPTERS.map(c=>{const its=items.filter(x=>x.ch===c.id);return its.length?`<tr><td>Chương ${c.id}: ${esc(c.short)}</td><td>${its.filter(x=>x.pick===x.ans).length}/${its.length}</td></tr>`:''}).join('');
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Lịch sử</button><span class="eyebrow">Xem lại bài đã làm</span></div>
+  <h1>${esc(r.title)}</h1>
+  <div class="result" style="margin-top:12px">
+    <div class="score"><span class="big">${r.correct}/${r.total}</span><span>Điểm hệ 10: <b>${ten(r.correct,r.total)}</b></span><span class="muted">${fmtDate(r.at)} · làm trong ${fmt(r.secs)}</span></div>
+    ${r.kind==='exam'||r.kind==='retry'?`<table class="breakdown">${by}</table>`:''}
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="onlyWrong"> Chỉ xem ${wrong} câu sai</label>
+      ${wrong?`<button class="btn primary" id="redo" style="margin-left:auto">Làm lại ${wrong} câu sai</button>`:''}
+    </div>
+  </div>
+  <div id="qs"></div>`;
+  app.querySelector('#back').onclick=()=>location.hash='lich-su';
+  const qs=app.querySelector('#qs');
+  const draw=only=>{qs.innerHTML=items.map((it,i)=>only&&it.pick===it.ans?'':qHTML(it,i,true)).join('')};
+  app.querySelector('#onlyWrong').onchange=e=>draw(e.target.checked);draw(false);
+  const redo=app.querySelector('#redo');
+  if(redo)redo.onclick=()=>{
+    // dùng lại đúng câu hỏi đã lưu, xáo lại thứ tự đáp án
+    const again=items.filter(x=>x.pick!==x.ans).map(x=>{const ord=shuffle(x.opts.map((_,k)=>k));return {ch:x.ch,idx:x.idx,q:x.q,opts:ord.map(k=>x.opts[k]),ans:ord.indexOf(x.ans),exp:x.exp,pick:null}});
+    app.innerHTML=`<div class="top"><button class="back" id="back">← Lịch sử</button><span class="eyebrow">Làm lại câu sai</span></div><div id="pane"></div>`;
+    app.querySelector('#back').onclick=()=>location.hash='lich-su';
+    const ch=CHAPTERS.find(c=>c.id===r.ch);
+    startPractice(r.kind==='chapter'&&ch?ch:{id:0,qs:[],title:'Câu sai',short:'Câu sai'},again,app.querySelector('#pane'));
+    scrollTo(0,0);
+  };
+}
+
 // ---------- HOME ----------
 function home(){
   stopTimer();session=null;
@@ -167,6 +267,11 @@ function home(){
     <div class="muted" style="font-size:.92rem">Đề trộn ngẫu nhiên 10 câu mỗi chương, hết giờ tự nộp bài.${exams.length?` Lần gần nhất: <b>${exams[exams.length-1].score}/60</b>.`:''}</div></div>
     <span class="go">Vào thi</span>
   </button>
+  <button class="card hist-card" id="goHist" style="margin-bottom:12px">
+    <div><div class="t">Lịch sử làm bài</div>
+    <div class="muted" style="font-size:.92rem">${(()=>{const h=loadHist();if(!h.length)return 'Chưa có lần làm nào. Nộp bài xong sẽ được lưu ở đây để xem lại.';const l=h[h.length-1];return `Đã làm ${h.length} lần. Gần nhất: ${esc(l.title)}, <b>${l.correct}/${l.total}</b> lúc ${fmtDate(l.at)}.`})()}</div></div>
+    <span class="pill">Xem</span>
+  </button>
   <div class="grid">
   ${CHAPTERS.map(c=>{const b=best[c.id];return `<button class="card" data-ch="${c.id}">
     <span class="num">Chương ${c.id}</span>
@@ -182,12 +287,14 @@ function home(){
       <li><b>Lưu ý:</b> bản thảo và bản in 2021 khác nhau ở một số chỗ về bố cục và câu chữ. Đề thi có thể trích nguyên văn bản in 2021, nên khi thấy chữ trong đề hơi khác thì hiểu theo ý.</li>
       <li><b>Đã loại bỏ:</b> các câu hỏi về chi tiết không có trong giáo trình (câu nói của W. Petty, năm xuất bản tập I Bộ Tư bản, chính sách NEP, năm gia nhập ASEAN/APEC, EVFTA) và cách nói "điều kiện cần/đủ".</li>
       <li><b>Rà soát lần cuối:</b> bỏ thêm 2 câu không tìm được nguồn xác nhận (lý do hoàn thiện thể chế; "lợi ích cá nhân là cơ sở của các lợi ích khác"), sửa định nghĩa cách mạng công nghiệp theo đúng văn bản giáo trình. Những đoạn lý thuyết còn gắn nhãn <span class="unv">Chưa đối chiếu nguyên văn giáo trình</span> là kiến thức đúng nhưng chưa tìm được câu chữ gốc trong sách. Khái niệm CNH, HĐH của Hội nghị TW 7 khóa VII (1994) đã được xác nhận qua tài liệu của Đại học Huế.</li>
+      <li><b>Câu hay gặp trong đề ôn HUFLIT:</b> 20 câu có ghi chú "Câu hay gặp trong bộ đề ôn tập KTCT phổ biến" lấy từ bộ đề ôn tập lưu hành rộng rãi mà sinh viên HUFLIT (học phần 1010452) đang dùng. Chỉ giữ câu mà bộ đề đánh dấu đáp án và đáp án đó khớp với lý luận giáo trình; các câu tính toán đã được tính lại. Lưu ý: một số bộ đề trên mạng có đáp án sai (ví dụ đánh dấu "Tình cảnh giai cấp công nhân Anh" là tác phẩm cô đọng nhất của Mác thay vì Bộ Tư bản), những câu như vậy không được đưa vào.</li>
       <li><b>Câu hỏi bổ sung từ Quizlet:</b> 19 câu có ghi chú "Dạng câu hỏi thường gặp trong các bộ đề ôn thi trên Quizlet" được tham khảo từ các bộ đề sinh viên (ví dụ bộ đề của ĐH Phenikaa theo đúng tên 6 chương của giáo trình 2021). Chỉ lấy những câu mà nhiều bộ đề cho đáp án thống nhất và khớp với kiến thức giáo trình; câu hỏi được viết lại, không sao chép nguyên bộ. Quizlet là nội dung do sinh viên tự soạn, không phải nguồn chính thức.</li>
       <li><b>Đặc biệt:</b> giáo trình viết kinh tế tư nhân là "một động lực quan trọng"; Nghị quyết 68-NQ/TW (2025) đã nâng thành "động lực quan trọng nhất". Nên hỏi lại giảng viên đề thi dùng cách nói nào.</li>
     </ul>
   </details>
   <p class="foot">Chúc Cún thi tốt nhé!</p>`;
   app.querySelector('#goExam').onclick=()=>location.hash='thi-thu';
+  app.querySelector('#goHist').onclick=()=>location.hash='lich-su';
   app.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>location.hash='chuong-'+b.dataset.ch);
 }
 
@@ -275,6 +382,7 @@ function finishPractice(){
   const s=session;s.done=true;s.end=Date.now();
   const correct=s.items.filter(x=>x.pick===x.ans).length;
   if(s.items.length===s.c.qs.length){const best=store.get('best',{});if(best[s.c.id]==null||correct>best[s.c.id]){best[s.c.id]=correct;store.set('best',best)}}
+  recordSession(s);
   renderPractice();scrollTo(0,0);
 }
 
@@ -318,6 +426,7 @@ function resultBlock(){
     <div class="row">
       ${wrong?`<button class="btn primary" id="retryWrong">Làm lại ${wrong} câu sai</button>`:''}
       <button class="btn" id="retryAll">${s.mode==='exam'?'Thi đề mới':'Làm lại cả chương'}</button>
+      <button class="btn" id="histBtn">Lịch sử làm bài</button>
       <button class="btn" id="home2">Về trang chủ</button>
     </div>
     <p class="muted" style="margin:0;font-size:.92rem">Kéo xuống để xem đáp án và giải thích từng câu.</p>
@@ -327,6 +436,7 @@ function resultBlock(){
 function bindResult(){
   const s=session;
   app.querySelector('#home2').onclick=()=>location.hash='';
+  app.querySelector('#histBtn').onclick=()=>location.hash='lich-su';
   app.querySelector('#retryAll').onclick=()=>{if(s.mode==='exam')exam(true);else chapter(s.c.id,'quiz')};
   const rw=app.querySelector('#retryWrong');
   if(rw)rw.onclick=()=>{
@@ -402,6 +512,7 @@ function finishExam(auto){
   s.done=true;s.end=Math.min(Date.now(),s.start+EXAM_SEC*1000);stopTimer();
   const score=s.items.filter(x=>x.pick===x.ans).length;
   const ex=store.get('exams',[]);ex.push({score,at:Date.now()});store.set('exams',ex.slice(-20));
+  recordSession(s);
   document.getElementById('modal').classList.remove('show');
   renderExam();scrollTo(0,0);
   if(auto)modal('<h2>Hết giờ!</h2><p style="margin:0">Bài đã được nộp tự động.</p>',[{label:'Xem kết quả',primary:true}]);
@@ -413,6 +524,9 @@ function route(){
   let m=h.match(/^chuong-(\d)$/);
   if(m){chapter(+m[1],'notes');scrollTo(0,0);return}
   if(h==='thi-thu'){exam(false);scrollTo(0,0);return}
+  if(h==='lich-su'){historyPage();scrollTo(0,0);return}
+  m=h.match(/^xem-(\d+)$/);
+  if(m){reviewAttempt(m[1]);scrollTo(0,0);return}
   home();
 }
 addEventListener('hashchange',route);
