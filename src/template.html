@@ -13,6 +13,7 @@
   --bg:#f4f5f8; --surface:#ffffff; --ink:#18213a; --muted:#5d6680; --line:#dfe2ea;
   --accent:#a3202a; --accent-soft:#f8e7e8; --gold:#b7861c;
   --ok:#1f7a4a; --ok-soft:#e4f3ea; --bad:#b42318; --bad-soft:#fdecea;
+  --done:#1f8a52; --flag:#7b4bc4; --flag-soft:#efe7fb;
   --font-display:"Lora", Georgia, serif;
   --font-body:"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme:light;
@@ -22,6 +23,7 @@
     --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
     --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
     --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
+    --done:#3fb97a; --flag:#b48cf2; --flag-soft:#2d2342;
     color-scheme:dark;
   }
 }
@@ -29,6 +31,7 @@
   --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
   --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
   --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
+    --done:#3fb97a; --flag:#b48cf2; --flag-soft:#2d2342;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -75,15 +78,15 @@ button.card:hover{border-color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .toggle{display:flex;gap:6px;align-items:center;font-size:.92rem;color:var(--muted)}
 .q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;scroll-margin-top:80px}
-.q .qh{display:flex;gap:10px;margin-bottom:10px}
+.q .qh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
 .q .qn{font-weight:700;color:var(--accent);flex:none;font-variant-numeric:tabular-nums}
-.q .qt{font-weight:600}
+.q .qt{font-weight:600;margin-bottom:12px}
 .opts{display:grid;gap:8px}
 .opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink)}
 .opt .k{flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--muted);display:grid;place-items:center;font-size:.8rem;font-weight:700}
 .opt:hover:not([disabled]){border-color:var(--accent)}
-.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
-.opt.sel .k{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt.sel{border-color:var(--ink);background:var(--surface);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt.sel .k{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .opt.right{border-color:var(--ok);background:var(--ok-soft)}
 .opt.right .k{background:var(--ok);border-color:var(--ok);color:#fff}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
@@ -96,11 +99,6 @@ button.card:hover{border-color:var(--accent)}
 .score .big{font-family:var(--font-display);font-size:2.6rem;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .row{display:flex;gap:8px;flex-wrap:wrap}
-.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;margin-bottom:14px}
-.navgrid button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 0;font-size:.85rem;font-variant-numeric:tabular-nums}
-.navgrid button.done{background:var(--accent);border-color:var(--accent);color:#fff}
-.navgrid button.r{background:var(--ok);border-color:var(--ok);color:#fff}
-.navgrid button.w{background:var(--bad);border-color:var(--bad);color:#fff}
 .breakdown{width:100%;border-collapse:collapse;font-size:.95rem}
 .breakdown td{padding:6px 4px;border-bottom:1px solid var(--line)}
 .breakdown td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
@@ -120,6 +118,57 @@ div.opt{cursor:default}
 .pill.bad{background:var(--bad-soft);color:var(--bad)}
 @media (max-width:560px){.hrow{grid-template-columns:1fr auto}.hrow .row{grid-column:1/-1}}
 .hist-card{grid-template-columns:1fr auto;align-items:center}
+
+/* ---- quiz layout: questions left, control panel right ---- */
+.wrap:has(.quiz){max-width:1140px}
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+.panel{position:sticky;top:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:12px;max-height:calc(100vh - 24px);overflow:auto;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.stats2{display:grid;grid-template-columns:1fr 1fr;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.stats2 div{display:grid;gap:2px;text-align:center;padding:0 6px}
+.stats2 div+div{border-left:1px solid var(--line)}
+.stats2 span{font-size:.8rem;color:var(--muted)}
+.stats2 b{font-size:1.4rem;font-variant-numeric:tabular-nums;line-height:1.2}
+#timer.warn{color:var(--bad)}
+.gridwrap summary{cursor:pointer;font-weight:600;font-size:.92rem;list-style:none;display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.gridwrap summary::-webkit-details-marker{display:none}
+.gridwrap summary::before{content:"▸";color:var(--muted);transition:transform .15s}
+.gridwrap[open] summary::before{transform:rotate(90deg)}
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:7px;margin-bottom:12px}
+.navgrid button{aspect-ratio:1;width:100%;max-width:40px;justify-self:center;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums;padding:0}
+.navgrid button:hover{border-color:var(--ink)}
+.navgrid button.done{background:var(--done);border-color:var(--done);color:#fff}
+.navgrid button.fl{background:var(--flag);border-color:var(--flag);color:#fff}
+.navgrid button.r{background:var(--ok);border-color:var(--ok);color:#fff}
+.navgrid button.w{background:var(--bad);border-color:var(--bad);color:#fff}
+.navgrid button.r.fl,.navgrid button.w.fl{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--flag)}
+.navgrid button.r.fl{background:var(--ok)}.navgrid button.w.fl{background:var(--bad)}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem}
+.legend li{display:flex;align-items:center;gap:8px}
+.dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);flex:none}
+.dot.done{background:var(--done);border-color:var(--done)}.dot.fl{background:var(--flag);border-color:var(--flag)}
+.dot.r{background:var(--ok);border-color:var(--ok)}.dot.w{background:var(--bad);border-color:var(--bad)}
+.dot.ring{background:var(--surface);box-shadow:inset 0 0 0 2px var(--flag)}
+.submitbtn{width:100%;border-radius:99px;padding:11px 14px;font-size:1rem;position:sticky;bottom:0;box-shadow:0 -10px 12px -6px var(--surface)}
+.tag{font-size:.75rem;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.tag.flag{background:var(--flag-soft);color:var(--flag)}
+.q.flagged{border-color:var(--flag);box-shadow:inset 4px 0 0 var(--flag)}
+.flagbox{position:relative;display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:12px;color:var(--muted);font-size:.9rem;cursor:pointer;user-select:none}
+.flagbox input{position:absolute;opacity:0;width:1px;height:1px}
+.flagbox i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center}
+.flagbox input:checked+i{background:var(--flag);border-color:var(--flag)}
+.flagbox input:checked+i::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.flagbox input:checked~*{color:var(--flag)}
+.flagbox:has(input:checked) span{color:var(--flag);font-weight:600}
+.flagbox input:focus-visible+i{outline:2px solid var(--flag);outline-offset:2px}
+@media (max-width:899px){
+  .quiz{grid-template-columns:1fr;gap:12px}
+  .panel{order:-1;top:0;z-index:6;border-radius:0 0 14px 14px;margin:0 -16px;padding:10px 16px;max-height:70vh;gap:8px}
+  .stats2{padding-bottom:8px}.stats2 b{font-size:1.15rem}
+  .navgrid{grid-template-columns:repeat(auto-fill,minmax(38px,1fr))}
+  .gridwrap summary{margin-bottom:6px}
+  .submitbtn{padding:9px 14px}
+  .q{scroll-margin-top:150px}
+}
 .foot{margin-top:28px;font-size:.88rem;color:var(--muted);text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media (max-width:420px){h1{font-size:1.45rem}.score .big{font-size:2.1rem}}
@@ -145,7 +194,7 @@ const ten=(c,t)=>(Math.round(c/t*100)/10).toLocaleString('vi-VN');
 function inst(ch,raw,idx){
   const [q,opts,a,e,fixed]=raw;
   const order=fixed?opts.map((_,i)=>i):shuffle(opts.map((_,i)=>i));
-  return {ch,idx,q,opts:order.map(i=>opts[i]),ans:order.indexOf(a),exp:e,pick:null};
+  return {ch,idx,q,opts:order.map(i=>opts[i]),ans:order.indexOf(a),exp:e,pick:null,flag:false};
 }
 
 let session=null, tick=null;
@@ -168,7 +217,7 @@ function saveAttempt(rec){
   while(h.length){try{localStorage.setItem('ktct_history',JSON.stringify(h));return true}catch(e){if(h.length===1)return false;h.shift()}}
   return false;
 }
-function snapshot(items){return items.map(x=>({ch:x.ch,q:x.q,o:x.opts,a:x.ans,e:x.exp,p:x.pick}))}
+function snapshot(items){return items.map(x=>({ch:x.ch,q:x.q,o:x.opts,a:x.ans,e:x.exp,p:x.pick,f:x.flag?1:0}))}
 function fmtDate(ts){const d=new Date(ts);const z=n=>String(n).padStart(2,'0');return `${z(d.getHours())}:${z(d.getMinutes())} · ${z(d.getDate())}/${z(d.getMonth()+1)}/${d.getFullYear()}`}
 function recordSession(s){
   const correct=s.items.filter(x=>x.pick===x.ans).length;
@@ -221,7 +270,7 @@ function reviewAttempt(id){
   stopTimer();session=null;
   const r=loadHist().find(x=>String(x.id)===String(id));
   if(!r){location.hash='lich-su';return}
-  const items=r.items.map((x,i)=>({ch:x.ch,idx:i,q:x.q,opts:x.o,ans:x.a,exp:x.e,pick:x.p}));
+  const items=r.items.map((x,i)=>({ch:x.ch,idx:i,q:x.q,opts:x.o,ans:x.a,exp:x.e,pick:x.p,flag:!!x.f}));
   const wrong=items.filter(x=>x.pick!==x.ans).length;
   const by=CHAPTERS.map(c=>{const its=items.filter(x=>x.ch===c.id);return its.length?`<tr><td>Chương ${c.id}: ${esc(c.short)}</td><td>${its.filter(x=>x.pick===x.ans).length}/${its.length}</td></tr>`:''}).join('');
   app.innerHTML=`<div class="top"><button class="back" id="back">← Lịch sử</button><span class="eyebrow">Xem lại bài đã làm</span></div>
@@ -231,14 +280,16 @@ function reviewAttempt(id){
     ${r.kind==='exam'||r.kind==='retry'?`<table class="breakdown">${by}</table>`:''}
     <div class="row">
       <label class="toggle"><input type="checkbox" id="onlyWrong"> Chỉ xem ${wrong} câu sai</label>
+      ${items.some(x=>x.flag)?`<label class="toggle"><input type="checkbox" id="onlyFlag"> Chỉ xem ${items.filter(x=>x.flag).length} câu đã đánh dấu</label>`:''}
       ${wrong?`<button class="btn primary" id="redo" style="margin-left:auto">Làm lại ${wrong} câu sai</button>`:''}
     </div>
   </div>
   <div id="qs"></div>`;
   app.querySelector('#back').onclick=()=>location.hash='lich-su';
   const qs=app.querySelector('#qs');
-  const draw=only=>{qs.innerHTML=items.map((it,i)=>only&&it.pick===it.ans?'':qHTML(it,i,true)).join('')};
-  app.querySelector('#onlyWrong').onchange=e=>draw(e.target.checked);draw(false);
+  const ow=app.querySelector('#onlyWrong'), of=app.querySelector('#onlyFlag');
+  const draw=()=>{const w=ow.checked,f=of&&of.checked;qs.innerHTML=items.map((it,i)=>(w&&it.pick===it.ans)||(f&&!it.flag)?'':qHTML(it,i,true)).join('')||'<p class="muted">Không có câu nào khớp bộ lọc.</p>'};
+  ow.onchange=draw;if(of)of.onchange=draw;draw();
   const redo=app.querySelector('#redo');
   if(redo)redo.onclick=()=>{
     // dùng lại đúng câu hỏi đã lưu, xáo lại thứ tự đáp án
@@ -351,31 +402,13 @@ function renderReview(c,pane,hide){
 function startPractice(c,items,pane){
   session={mode:'practice',c,items,start:Date.now(),instant:store.get('instant',false),done:false,pane};
   renderPractice();
-  tick=setInterval(()=>{const t=document.getElementById('timer');if(t&&!session.done)t.textContent='⏱ '+fmt((Date.now()-session.start)/1000)},1000);
+  tick=setInterval(()=>{const t=document.getElementById('timer');if(t&&session&&!session.done)t.textContent=fmt((Date.now()-session.start)/1000)},1000);
 }
 
 function renderPractice(){
   const s=session,p=s.pane;
-  const answered=s.items.filter(x=>x.pick!==null).length;
-  p.innerHTML=`
-  ${s.done?resultBlock():''}
-  <div class="bar">
-    <span class="timer" id="timer">⏱ ${fmt(((s.done?s.end:Date.now())-s.start)/1000)}</span>
-    <div class="progress" aria-label="Tiến độ"><span style="width:${answered/s.items.length*100}%"></span></div>
-    <span class="muted" style="font-variant-numeric:tabular-nums">${answered}/${s.items.length}</span>
-    ${s.done?'':`<label class="toggle"><input type="checkbox" id="instant" ${s.instant?'checked':''}> Hiện đáp án ngay</label>
-    <button class="btn primary" id="submit">Nộp bài</button>`}
-  </div>
-  <div id="qs">${s.items.map((it,i)=>qHTML(it,i,s.done||(s.instant&&it.pick!==null))).join('')}</div>
-  ${s.done?'':`<div class="row"><button class="btn primary" id="submit2">Nộp bài</button></div>`}`;
-  bindQs();
-  if(!s.done){
-    p.querySelector('#instant').onchange=e=>{s.instant=e.target.checked;store.set('instant',s.instant);renderPractice()};
-    const sub=()=>{const left=s.items.filter(x=>x.pick===null).length;
-      if(left)modal(`<h2>Nộp bài?</h2><p style="margin:0">Còn <b>${left}</b> câu chưa làm. Câu bỏ trống tính là sai.</p>`,[{label:'Làm tiếp'},{label:'Nộp luôn',primary:true,fn:finishPractice}]);
-      else finishPractice()};
-    p.querySelector('#submit').onclick=sub;p.querySelector('#submit2').onclick=sub;
-  } else bindResult();
+  p.innerHTML=quizLayout(s);
+  bindQuiz(s,finishPractice);
 }
 
 function finishPractice(){
@@ -386,31 +419,107 @@ function finishPractice(){
   renderPractice();scrollTo(0,0);
 }
 
+// ---------- QUIZ LAYOUT (dùng chung cho luyện tập & thi thử) ----------
 function qHTML(it,i,reveal){
-  return `<div class="q" id="q${i}"><div class="qh"><span class="qn">Câu ${i+1}.</span><span class="qt">${esc(it.q)}</span></div>
+  const s=session, live=s&&!s.done&&s.items&&s.items[i]===it;
+  const chTag=s&&s.mode==='exam'?`<span class="tag">Chương ${it.ch}</span>`:'';
+  return `<div class="q${it.flag?' flagged':''}" id="q${i}">
+  <div class="qh"><span class="qn">Câu ${i+1}</span>${chTag}${it.flag&&!live?'<span class="tag flag">Đã đánh dấu</span>':''}</div>
+  <div class="qt">${esc(it.q)}</div>
   <div class="opts">${it.opts.map((o,j)=>{
     let cls='opt';
     if(reveal){if(j===it.ans)cls+=' right';else if(j===it.pick)cls+=' wrong'}
     else if(j===it.pick)cls+=' sel';
     return `<button class="${cls}" data-q="${i}" data-o="${j}" ${reveal?'disabled':''}><span class="k">${LETTERS[j]}</span><span>${esc(o)}</span></button>`}).join('')}</div>
   ${reveal?`<div class="exp"><b>${it.pick===it.ans?'Đúng rồi.':it.pick===null?'Bỏ trống.':'Chưa đúng.'}</b> Đáp án: <b>${LETTERS[it.ans]}</b>. ${esc(it.exp)}</div>`:''}
+  ${live?`<label class="flagbox"><span>Lát kiểm tra lại</span><input type="checkbox" data-flag="${i}" ${it.flag?'checked':''}><i aria-hidden="true"></i></label>`:''}
   </div>`;
 }
 
-function bindQs(){
-  app.querySelectorAll('.opt:not([disabled])').forEach(b=>b.onclick=()=>{
-    const s=session,i=+b.dataset.q,it=s.items[i];it.pick=+b.dataset.o;
-    const reveal=s.mode==='practice'&&s.instant;
-    const el=document.getElementById('q'+i);el.outerHTML=qHTML(it,i,reveal);
-    bindQs();updateBar();
-  });
+function cellClass(s,it){
+  if(s.done)return (it.pick===it.ans?'r':'w')+(it.flag?' fl':'');
+  if(it.flag)return 'fl';
+  return it.pick!==null?'done':'';
 }
 
-function updateBar(){
-  const s=session,answered=s.items.filter(x=>x.pick!==null).length;
-  const pr=app.querySelector('.progress span');if(pr)pr.style.width=answered/s.items.length*100+'%';
-  const cnt=app.querySelector('.bar .muted');if(cnt)cnt.textContent=answered+'/'+s.items.length;
-  if(s.mode==='exam'){const nb=app.querySelectorAll('.navgrid button');nb.forEach((b,i)=>b.classList.toggle('done',s.items[i].pick!==null))}
+function panelHTML(s){
+  const n=s.items.length, answered=s.items.filter(x=>x.pick!==null).length, flagged=s.items.filter(x=>x.flag).length;
+  const isExam=s.mode==='exam';
+  const timeLabel=s.done?'Thời gian làm':isExam?'Thời gian còn lại':'Thời gian';
+  const timeVal=s.done?fmt((s.end-s.start)/1000):isExam?fmt(EXAM_SEC-(Date.now()-s.start)/1000):fmt((Date.now()-s.start)/1000);
+  const legend=s.done
+    ?`<li><i class="dot r"></i>Câu đúng</li><li><i class="dot w"></i>Câu sai / bỏ trống</li><li><i class="dot fl ring"></i>Câu đã đánh dấu</li>`
+    :`<li><i class="dot done"></i>Câu đã làm</li><li><i class="dot"></i>Câu chưa làm</li><li><i class="dot fl"></i>Câu cần kiểm tra lại</li>`;
+  return `<aside class="panel" aria-label="Bảng điều khiển bài làm">
+    <div class="stats2">
+      <div><span>Số câu đã làm</span><b id="pAnswered">${answered}/${n}</b></div>
+      <div><span>${timeLabel}</span><b id="timer" class="${!s.done&&isExam&&EXAM_SEC-(Date.now()-s.start)/1000<300?'warn':''}">${timeVal}</b></div>
+    </div>
+    <details class="gridwrap" id="gridwrap" open>
+      <summary>Bảng câu hỏi <span class="muted" id="pFlagged">${flagged?`· ${flagged} câu đánh dấu`:''}</span></summary>
+      <div class="navgrid">${s.items.map((it,i)=>`<button class="${cellClass(s,it)}" data-go="${i}" aria-label="Câu ${i+1}">${i+1}</button>`).join('')}</div>
+      <ul class="legend">${legend}</ul>
+    </details>
+    ${!s.done&&!isExam?`<label class="toggle"><input type="checkbox" id="instant" ${s.instant?'checked':''}> Hiện đáp án ngay sau mỗi câu</label>`:''}
+    ${s.done?'':'<button class="btn primary submitbtn" id="submit">Nộp bài</button>'}
+  </aside>`;
+}
+
+function quizLayout(s){
+  const reveal=it=>s.done||(s.mode==='practice'&&s.instant&&it.pick!==null);
+  return `${s.done?resultBlock():''}
+  <div class="quiz">
+    <div class="qcol"><div id="qs">${s.items.map((it,i)=>qHTML(it,i,reveal(it))).join('')}</div>
+      ${s.done?'':'<div class="row" style="justify-content:flex-end"><button class="btn primary" id="submit2">Nộp bài</button></div>'}
+    </div>
+    ${panelHTML(s)}
+  </div>`;
+}
+
+function refreshPanel(){
+  const s=session;if(!s)return;
+  const answered=s.items.filter(x=>x.pick!==null).length, flagged=s.items.filter(x=>x.flag).length;
+  const a=document.getElementById('pAnswered');if(a)a.textContent=answered+'/'+s.items.length;
+  const f=document.getElementById('pFlagged');if(f)f.textContent=flagged?`· ${flagged} câu đánh dấu`:'';
+  app.querySelectorAll('.navgrid [data-go]').forEach(b=>{b.className=cellClass(s,s.items[+b.dataset.go])});
+}
+
+function bindQs(){
+  const s=session;
+  app.querySelectorAll('.opt:not([disabled])').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.q,it=s.items[i];it.pick=+b.dataset.o;
+    const reveal=s.mode==='practice'&&s.instant;
+    document.getElementById('q'+i).outerHTML=qHTML(it,i,reveal);
+    bindQs();refreshPanel();
+  });
+  app.querySelectorAll('[data-flag]').forEach(c=>c.onchange=()=>{
+    const i=+c.dataset.flag;s.items[i].flag=c.checked;
+    document.getElementById('q'+i).classList.toggle('flagged',c.checked);
+    refreshPanel();
+  });
+}
+function updateBar(){refreshPanel()}
+
+function bindQuiz(s,finishFn){
+  app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
+    document.getElementById('q'+b.dataset.go).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    if(matchMedia('(max-width: 899px)').matches){const g=document.getElementById('gridwrap');if(g)g.open=false}
+  });
+  bindQs();
+  if(matchMedia('(max-width: 899px)').matches){const g=document.getElementById('gridwrap');if(g&&!s.done)g.open=false}
+  if(s.done){bindResult();return}
+  const ins=app.querySelector('#instant');
+  if(ins)ins.onchange=e=>{s.instant=e.target.checked;store.set('instant',s.instant);renderPractice()};
+  const sub=()=>{
+    const left=s.items.filter(x=>x.pick===null).length, fl=s.items.filter(x=>x.flag).length;
+    const lines=[];
+    if(left)lines.push(`Còn <b>${left}</b> câu chưa làm (tính là sai).`);
+    if(fl)lines.push(`Còn <b>${fl}</b> câu đang đánh dấu <b>cần kiểm tra lại</b>.`);
+    if(!lines.length)lines.push(`Đã làm hết ${s.items.length} câu.`);
+    modal(`<h2>Nộp bài?</h2><p style="margin:0">${lines.join('<br>')}${s.mode==='exam'?'<br>Nộp xong sẽ không sửa được nữa.':''}</p>`,
+      [{label:fl?'Xem lại câu đánh dấu':'Làm tiếp',fn:fl?()=>{const k=s.items.findIndex(x=>x.flag);document.getElementById('q'+k).scrollIntoView({block:'start'})}:null},{label:'Nộp bài',primary:true,fn:finishFn}]);
+  };
+  app.querySelector('#submit').onclick=sub;app.querySelector('#submit2').onclick=sub;
 }
 
 function resultBlock(){
@@ -460,7 +569,7 @@ function exam(fresh){
   <h1>Thi thử 60 câu / 60 phút</h1>
   <div class="notes" style="margin-top:14px;padding:16px 18px">
     <p style="margin-top:0">Đề gồm ${EXAM_N} câu, mỗi chương ${PER_CH} câu chọn ngẫu nhiên, thứ tự câu và đáp án được xáo trộn. Mỗi lần vào là một đề mới.</p>
-    <ul><li>Đồng hồ đếm ngược 60 phút, hết giờ bài tự nộp.</li><li>Trong lúc thi không hiện đáp án. Nộp bài xong mới xem điểm, đáp án và giải thích.</li><li>Bấm số câu ở bảng phía trên để nhảy nhanh tới câu đó.</li></ul>
+    <ul><li>Đồng hồ đếm ngược 60 phút, hết giờ bài tự nộp.</li><li>Trong lúc thi không hiện đáp án. Nộp bài xong mới xem điểm, đáp án và giải thích.</li><li>Bấm số câu ở bảng bên phải để nhảy nhanh tới câu đó. Câu nào chưa chắc thì tích <b>Lát kiểm tra lại</b>, ô số câu sẽ chuyển màu tím để quay lại sau.</li></ul>
   </div>
   <div class="row" style="margin-top:14px"><button class="btn primary" id="begin">Bắt đầu tính giờ</button></div>`;
   app.querySelector('#back').onclick=()=>location.hash='';
@@ -473,7 +582,7 @@ function exam(fresh){
       if(session.done)return;
       const left=EXAM_SEC-(Date.now()-session.start)/1000;
       const t=document.getElementById('timer');
-      if(t){t.textContent='⏳ '+fmt(left);t.classList.toggle('warn',left<300)}
+      if(t){t.textContent=fmt(left);t.classList.toggle('warn',left<300)}
       if(left<=0){finishExam(true)}
     },500);
   };
@@ -481,30 +590,13 @@ function exam(fresh){
 
 function renderExam(){
   const s=session;
-  const answered=s.items.filter(x=>x.pick!==null).length;
-  const left=EXAM_SEC-(Date.now()-s.start)/1000;
-  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Phòng thi thử</span></div>
-  ${s.done?resultBlock():''}
-  <div class="bar">
-    <span class="timer ${!s.done&&left<300?'warn':''}" id="timer">${s.done?'⏱ '+fmt((s.end-s.start)/1000):'⏳ '+fmt(left)}</span>
-    <div class="progress"><span style="width:${answered/s.items.length*100}%"></span></div>
-    <span class="muted" style="font-variant-numeric:tabular-nums">${answered}/${s.items.length}</span>
-    ${s.done?'':'<button class="btn primary" id="submit">Nộp bài</button>'}
-  </div>
-  <div class="navgrid">${s.items.map((it,i)=>{let c='';if(s.done)c=it.pick===it.ans?'r':'w';else if(it.pick!==null)c='done';return `<button class="${c}" data-go="${i}">${i+1}</button>`}).join('')}</div>
-  <div id="qs">${s.items.map((it,i)=>qHTML(it,i,s.done)).join('')}</div>
-  ${s.done?'':'<div class="row"><button class="btn primary" id="submit2">Nộp bài</button></div>'}`;
+  app.innerHTML=`<div class="top"><button class="back" id="back">← Trang chủ</button><span class="eyebrow">Phòng thi thử · 60 câu / 60 phút</span></div>
+  ${quizLayout(s)}`;
   app.querySelector('#back').onclick=()=>{
     if(!s.done)modal('<h2>Rời phòng thi?</h2><p style="margin:0">Bài đang làm sẽ bị hủy.</p>',[{label:'Ở lại'},{label:'Rời đi',primary:true,fn:()=>{stopTimer();session=null;location.hash=''}}]);
     else location.hash='';
   };
-  app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>document.getElementById('q'+b.dataset.go).scrollIntoView({behavior:'smooth'}));
-  bindQs();
-  if(!s.done){
-    const sub=()=>{const l=s.items.filter(x=>x.pick===null).length;
-      modal(`<h2>Nộp bài?</h2><p style="margin:0">${l?`Còn <b>${l}</b> câu chưa làm.`:'Đã làm hết 60 câu.'} Nộp xong sẽ không sửa được nữa.</p>`,[{label:'Làm tiếp'},{label:'Nộp bài',primary:true,fn:()=>finishExam(false)}])};
-    app.querySelector('#submit').onclick=sub;app.querySelector('#submit2').onclick=sub;
-  } else bindResult();
+  bindQuiz(s,()=>finishExam(false));
 }
 
 function finishExam(auto){
