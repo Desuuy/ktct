@@ -4,9 +4,9 @@ const NOTES = {
 <p>Kinh tế chính trị là môn khoa học kinh tế nghiên cứu các quan hệ kinh tế để tìm ra các quy luật chi phối sự vận động của các hiện tượng và quá trình hoạt động kinh tế của con người. Thuật ngữ <b>"kinh tế chính trị"</b> xuất hiện năm <b>1615</b> trong tác phẩm <i>Chuyên luận về kinh tế chính trị</i> của nhà kinh tế người Pháp <b>Antoine de Montchrétien</b>.</p>
 <p>Các trường phái tiêu biểu trước Mác:</p>
 <ul>
-<li><b>Chủ nghĩa trọng thương</b> (từ thế kỷ XV đến cuối thế kỷ XVII), gắn với thời kỳ tích lũy nguyên thủy của CNTB. Coi trọng vai trò của <b>thương mại</b>, nhất là ngoại thương; cho rằng của cải là tiền (vàng, bạc), lợi nhuận sinh ra từ lĩnh vực lưu thông. Đây là hệ thống lý luận KTCT bước đầu nghiên cứu về nền sản xuất TBCN.</li>
-<li><b>Chủ nghĩa trọng nông</b> (Pháp, thế kỷ XVIII): chuyển đối tượng nghiên cứu từ lưu thông sang <b>sản xuất</b>, nhưng chỉ coi <b>nông nghiệp</b> là ngành sản xuất ra của cải; coi trọng sở hữu tư nhân và tự do kinh tế. Đại biểu: F. Quesnay (tác giả <i>Biểu kinh tế</i>), Turgot.</li>
-<li><b>KTCT tư sản cổ điển Anh</b>: đại biểu tiêu biểu W. Petty, A. Smith (<i>Của cải của các dân tộc</i>, 1776), D. Ricardo. Lần đầu tiên nghiên cứu các phạm trù kinh tế một cách có hệ thống; đóng góp lớn nhất là xây dựng <b>lý thuyết giá trị – lao động</b> (lao động là nguồn gốc của giá trị).</li>
+<li><b>Chủ nghĩa trọng thương</b> (phát triển ở Tây Âu từ giữa thế kỷ XV đến giữa thế kỷ XVII), gắn với thời kỳ tích lũy nguyên thủy của CNTB. Coi trọng vai trò của <b>thương mại</b>, nhất là ngoại thương; cho rằng của cải là tiền (vàng, bạc), lợi nhuận sinh ra từ lĩnh vực lưu thông. Đây là hệ thống lý luận KTCT bước đầu nghiên cứu về nền sản xuất TBCN.</li>
+<li><b>Chủ nghĩa trọng nông</b> (Pháp, từ nửa cuối thế kỷ XVII đến nửa đầu thế kỷ XVIII): chuyển đối tượng nghiên cứu từ lưu thông sang <b>sản xuất</b>, nhưng chỉ coi <b>nông nghiệp</b> là ngành sản xuất ra của cải; coi trọng sở hữu tư nhân và tự do kinh tế. Đại biểu: P. Boisguillebert, F. Quesnay (tác giả <i>Biểu kinh tế</i>), J. Turgot.</li>
+<li><b>KTCT tư sản cổ điển Anh</b>: <b>mở đầu</b> là W. Petty (Mác coi là người sáng lập), tiếp đến A. Smith (<i>Của cải của các dân tộc</i>, 1776), <b>kết thúc</b> ở D. Ricardo. Lần đầu tiên nghiên cứu các phạm trù kinh tế một cách có hệ thống; đóng góp lớn nhất là xây dựng <b>lý thuyết giá trị – lao động</b> (lao động là nguồn gốc của giá trị).</li>
 </ul>
 <p>Chủ nghĩa Mác – Lênin gồm 3 bộ phận hợp thành: Triết học, Kinh tế chính trị và Chủ nghĩa xã hội khoa học. <b>KTCT Mác – Lênin</b> ra đời vào thế kỷ XIX, do C. Mác và Ph. Ăngghen sáng lập trên cơ sở kế thừa có phê phán những giá trị khoa học của KTCT cổ điển Anh. Lý luận được thể hiện tập trung và cô đọng nhất trong <b>Bộ Tư bản</b>. Hai phát hiện quan trọng của Mác: <b>tính hai mặt của lao động sản xuất hàng hóa</b> và <b>học thuyết giá trị thặng dư</b> (được coi là "hòn đá tảng"). Sau khi Mác và Ăngghen qua đời, <b>V.I. Lênin</b> tiếp tục kế thừa, bổ sung và phát triển, đặc biệt là lý luận về CNTB độc quyền và về thời kỳ quá độ lên CNXH.</p>
 
@@ -89,14 +89,14 @@ const NOTES = {
 <li><b>Phương tiện thanh toán:</b> trả nợ, nộp thuế, trả tiền mua chịu…</li>
 <li><b>Tiền tệ thế giới:</b> tiền dùng trong trao đổi, thanh toán giữa các quốc gia.</li>
 </ul>
-<p><b>Dịch vụ</b> là hàng hóa vô hình: không thể cất trữ, việc sản xuất và tiêu dùng thường diễn ra đồng thời.</p>
+<p><b>Dịch vụ</b> là một loại hàng hóa, nhưng là hàng hóa vô hình: không thể cất trữ, việc sản xuất và tiêu dùng thường diễn ra đồng thời.</p>
+<p><b>Một số hàng hóa đặc biệt</b> (theo giáo trình 2021): quyền sử dụng đất đai; thương hiệu (danh tiếng); chuyển nhượng cầu thủ bóng đá; chứng khoán, chứng quyền và một số giấy tờ có giá.</p>
 
 <h3>6. Thị trường và nền kinh tế thị trường</h3>
 <ul>
 <li><b>Thị trường</b> (nghĩa hẹp): nơi diễn ra hành vi trao đổi, mua bán hàng hóa. (Nghĩa rộng): tổng hòa các mối quan hệ liên quan đến trao đổi, mua bán hàng hóa trong xã hội.</li>
-<li><b>Vai trò</b> <span class="unv">Chưa đối chiếu nguyên văn giáo trình</span>: điều kiện, môi trường cho sản xuất phát triển; kích thích sáng tạo, phân bổ nguồn lực hiệu quả; gắn kết nền kinh tế thành một chỉnh thể, gắn kinh tế quốc gia với kinh tế thế giới.</li>
-<li><b>Chức năng:</b> thực hiện (thừa nhận) giá trị sử dụng và giá trị của hàng hóa; cung cấp thông tin; kích thích hoặc hạn chế sản xuất và tiêu dùng.</li>
-<li><b>Ưu thế của KTTT</b> <span class="unv">Chưa đối chiếu nguyên văn giáo trình</span>: tạo động lực cho sự hình thành ý tưởng mới; phát huy tốt nhất tiềm năng của mọi chủ thể, vùng miền; tạo phương thức thỏa mãn tối đa nhu cầu con người.</li>
+<li><b>Vai trò</b> (3): thực hiện giá trị hàng hóa, là điều kiện, môi trường cho sản xuất phát triển; kích thích sáng tạo, phân bổ nguồn lực hiệu quả; gắn kết nền kinh tế thành một chỉnh thể, gắn kinh tế quốc gia với kinh tế thế giới.</li>
+<li><b>Ưu thế của KTTT</b>: tạo động lực cho sự hình thành ý tưởng mới; phát huy tốt nhất tiềm năng của mọi chủ thể, vùng miền; tạo phương thức thỏa mãn tối đa nhu cầu con người.</li>
 <li><b>Khuyết tật của KTTT:</b> luôn tiềm ẩn rủi ro khủng hoảng; không tự khắc phục được xu hướng cạn kiệt tài nguyên, suy thoái môi trường; không tự khắc phục được hiện tượng phân hóa sâu sắc trong xã hội.</li>
 </ul>
 
@@ -106,14 +106,14 @@ const NOTES = {
 <ol><li>Tự phát điều tiết sản xuất và lưu thông hàng hóa.</li><li>Tự phát kích thích cải tiến kỹ thuật, hợp lý hóa sản xuất, tăng NSLĐ, thúc đẩy LLSX phát triển.</li><li>Bình tuyển tự nhiên và phân hóa người sản xuất thành người giàu, người nghèo.</li></ol></li>
 <li><b>Quy luật cung – cầu:</b> cung &gt; cầu → giá cả &lt; giá trị; cung &lt; cầu → giá cả &gt; giá trị; cung = cầu → giá cả = giá trị.</li>
 <li><b>Quy luật lưu thông tiền tệ:</b> M = P·Q / V (M: lượng tiền cần cho lưu thông; P: mức giá; Q: khối lượng hàng hóa; V: số vòng lưu thông của tiền).</li>
-<li><b>Quy luật cạnh tranh:</b> cạnh tranh trong nội bộ ngành và giữa các ngành (chi tiết ở chương 4). Tích cực: thúc đẩy tiến bộ KH–KT, phát triển LLSX, phân bổ nguồn lực hiệu quả. Tiêu cực: phân hóa người sản xuất, gây rối thị trường, lãng phí nguồn lực, tổn hại phúc lợi xã hội.</li>
+<li><b>Quy luật cạnh tranh:</b> cạnh tranh <b>trong nội bộ ngành</b> (cải tiến kỹ thuật, hạ giá trị cá biệt) → hình thành <b>giá trị thị trường</b>; cạnh tranh <b>giữa các ngành</b> (tự do di chuyển vốn) → hình thành <b>tỷ suất lợi nhuận bình quân</b>. Tích cực: thúc đẩy tiến bộ KH–KT, phát triển LLSX, phân bổ nguồn lực hiệu quả. Tiêu cực: phân hóa người sản xuất, gây rối thị trường, lãng phí nguồn lực, tổn hại phúc lợi xã hội.</li>
 </ul>
 
 <h3>8. Vai trò của các chủ thể tham gia thị trường</h3>
 <ul>
 <li><b>Người sản xuất:</b> sản xuất, cung cấp hàng hóa, dịch vụ; phải có trách nhiệm với con người, xã hội.</li>
 <li><b>Người tiêu dùng:</b> mua hàng hóa, dịch vụ; định hướng sản xuất; cần tiêu dùng có trách nhiệm.</li>
-<li><b>Thương nhân và các trung gian thương mại:</b> cầu nối giữa sản xuất và tiêu dùng, giữa các chủ thể; làm thị trường linh hoạt hơn.</li>
+<li><b>Các chủ thể trung gian trong thị trường</b> (thương nhân, môi giới…): cầu nối giữa sản xuất và tiêu dùng, giữa các chủ thể; làm thị trường linh hoạt hơn.</li>
 <li><b>Nhà nước:</b> quản lý nhà nước về kinh tế, tạo lập môi trường thuận lợi; khắc phục khuyết tật của thị trường.</li>
 </ul>`,
 
@@ -181,8 +181,8 @@ const NOTES = {
 </ul>`,
 
 4: `
-<h3>1. Cạnh tranh ở cấp độ độc quyền trong nền KTTT</h3>
-<p><b>Cạnh tranh</b> là sự ganh đua giữa các chủ thể kinh tế nhằm có được những ưu thế về sản xuất cũng như tiêu thụ để thu lợi ích tối đa.</p>
+<h3>1. Cạnh tranh (nhắc lại từ chương 2)</h3>
+<p><b>Cạnh tranh</b> là sự ganh đua giữa các chủ thể kinh tế nhằm có được những ưu thế về sản xuất cũng như tiêu thụ để thu lợi ích tối đa. Giáo trình 2021 trình bày hai loại cạnh tranh dưới đây ở mục quy luật cạnh tranh (chương 2); chương 4 tập trung vào quan hệ giữa cạnh tranh và độc quyền.</p>
 <ul>
 <li><b>Cạnh tranh trong nội bộ ngành:</b> giữa các doanh nghiệp trong cùng một ngành, sản xuất cùng loại hàng hóa. Biện pháp: cải tiến kỹ thuật, hạ giá trị cá biệt. Kết quả: hình thành <b>giá trị thị trường</b> của từng loại hàng hóa.</li>
 <li><b>Cạnh tranh giữa các ngành:</b> giữa các doanh nghiệp ở các ngành khác nhau nhằm tìm nơi đầu tư có lợi hơn. Biện pháp: tự do di chuyển tư bản. Kết quả: hình thành <b>tỷ suất lợi nhuận bình quân</b>.</li>
@@ -468,7 +468,7 @@ const EXTRA3 = {
 ],
 2: [
 ["Lao động giản đơn là:", ["Lao động không đòi hỏi phải qua đào tạo, huấn luyện chuyên môn", "Lao động làm những công việc đơn giản", "Lao động chỉ làm một công đoạn của quá trình sản xuất", "Lao động tạo ra sản phẩm chất lượng thấp"], 0, "Lao động giản đơn là lao động mà người bình thường không cần qua đào tạo cũng làm được; lao động phức tạp phải qua đào tạo." + HF],
-["Lao động trừu tượng là:", ["Sự hao phí sức lao động nói chung (cơ bắp, thần kinh, trí óc) của người sản xuất hàng hóa, không kể hình thức cụ thể", "Lao động có trình độ cao", "Lao động trí óc", "Lao động thành thạo"], 0, "Lao động trừu tượng là lao động đã gạt bỏ hình thức cụ thể; nó tạo ra giá trị của hàng hóa." + HF],
+["Lao động trừu tượng là:", ["Lao động xã hội của người sản xuất hàng hóa không kể đến hình thức cụ thể của nó (sự hao phí sức lao động nói chung)", "Lao động có trình độ cao", "Lao động trí óc", "Lao động thành thạo"], 0, "Lao động trừu tượng là lao động đã gạt bỏ hình thức cụ thể; nó tạo ra giá trị của hàng hóa." + HF],
 ["Giá trị sử dụng và giá trị của hàng hóa được thừa nhận (thực hiện) thông qua:", ["Thị trường", "Người sản xuất", "Nhà nước", "Ngân hàng"], 0, "Thực hiện giá trị sử dụng và giá trị của hàng hóa là chức năng của thị trường." + HF],
 ["Các nhân tố ảnh hưởng đến lượng giá trị của một đơn vị hàng hóa là:", ["Năng suất lao động và tính chất phức tạp của lao động", "Năng suất lao động và cường độ lao động", "Cường độ lao động và tính chất phức tạp của lao động", "Giá cả và cung – cầu"], 0, "Cường độ lao động không làm thay đổi giá trị một đơn vị hàng hóa, nên không phải là nhân tố ảnh hưởng đến lượng giá trị đơn vị." + HF],
 ["Trong cùng một thời gian lao động, nếu năng suất lao động tăng 2 lần thì:", ["Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa giảm 2 lần, tổng giá trị không đổi", "Tổng số hàng hóa tăng 2 lần, giá trị một hàng hóa không đổi", "Tổng số hàng hóa và tổng giá trị đều tăng 2 lần", "Tổng số hàng hóa không đổi, giá trị một hàng hóa giảm 2 lần"], 0, "Hao phí lao động không đổi nhưng chia cho số sản phẩm gấp đôi, nên giá trị mỗi sản phẩm giảm một nửa, tổng giá trị giữ nguyên." + HF],
