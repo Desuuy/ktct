@@ -9,31 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Study booklet: ink-navy text on cool paper, textbook-crimson accent, gold for highlights */
-  --bg:#f4f5f8; --surface:#ffffff; --ink:#18213a; --muted:#5d6680; --line:#dfe2ea;
-  --accent:#a3202a; --accent-soft:#f8e7e8; --gold:#b7861c;
-  --ok:#1f7a4a; --ok-soft:#e4f3ea; --bad:#b42318; --bad-soft:#fdecea;
-  --done:#1f8a52; --flag:#7b4bc4; --flag-soft:#efe7fb;
+  /* Green & white: white surfaces on a faint green paper, forest-green accent; single light theme by choice */
+  --bg:#f3f8f4; --surface:#ffffff; --ink:#15281c; --muted:#5a6e61; --line:#d8e6dc;
+  --accent:#15803d; --accent-soft:#e3f3e8; --gold:#a16207;
+  --ok:#16a34a; --ok-soft:#e5f6ea; --bad:#c2410c; --bad-soft:#fdeee5;
+  --done:#16a34a; --flag:#7c3aed; --flag-soft:#f0e9fe;
   --font-display:"Lora", Georgia, serif;
   --font-body:"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
-    --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
-    --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
-    --done:#3fb97a; --flag:#b48cf2; --flag-soft:#2d2342;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#11141c; --surface:#1a1f2b; --ink:#e8eaf1; --muted:#9aa2b8; --line:#2c3344;
-  --accent:#ef6b73; --accent-soft:#3a1d22; --gold:#e0b452;
-  --ok:#5fcf91; --ok-soft:#163325; --bad:#ff7b6e; --bad-soft:#3a1a18;
-    --done:#3fb97a; --flag:#b48cf2; --flag-soft:#2d2342;
-  color-scheme:dark;
-}
+html{background:var(--bg)}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
@@ -118,6 +103,10 @@ div.opt{cursor:default}
 .pill.bad{background:var(--bad-soft);color:var(--bad)}
 @media (max-width:560px){.hrow{grid-template-columns:1fr auto}.hrow .row{grid-column:1/-1}}
 .hist-card{grid-template-columns:1fr auto;align-items:center}
+.exam-card,.hist-card{width:100%;box-sizing:border-box}
+.grid>button.card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px}
+.grid>button.card .row{margin-top:auto;align-items:center}
+.grid>button.card .pill{align-self:center}
 
 /* ---- quiz layout: questions left, control panel right ---- */
 .wrap:has(.quiz){max-width:1140px}
